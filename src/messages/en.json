@@ -1,0 +1,14 @@
+{
+  "site": {
+    "home": "Home",
+    "about": "About",
+    "courses": "Courses",
+    "mentors": "Mentors",
+    "reviews": "Reviews",
+    "news": "News",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard"
+  }
+}

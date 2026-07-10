@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+:root {
+  --brand-primary: #2e3192;
+  --brand-primary-deep: #292b86;
+  --brand-orange: #f15a24;
+  --brand-red: #ed1c24;
+  --surface-page: #fbfbff;
+  --text-strong: #0f172a;
+  --text-muted: #64748b;
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(46, 49, 146, 0.09), transparent 34%),
+    radial-gradient(circle at top right, rgba(241, 90, 36, 0.08), transparent 28%),
+    var(--surface-page);
+  color: var(--text-strong);
+  font-family: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+[lang="bn"] body {
+  font-family: var(--font-hind-siliguri), ui-sans-serif, system-ui, sans-serif;
+}
+
+[x-cloak] {
+  display: none !important;
+}
+
+.brand-grid {
+  background-image:
+    linear-gradient(rgba(41, 43, 134, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(41, 43, 134, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.site-prose :where(h1, h2, h3) {
+  color: var(--text-strong);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-top: 1.35rem;
+  margin-bottom: 0.65rem;
+}
+
+.site-prose :where(h1) {
+  font-size: 1.875rem;
+}
+
+.site-prose :where(h2) {
+  font-size: 1.45rem;
+}
+
+.site-prose :where(h3) {
+  font-size: 1.18rem;
+}
+
+.site-prose :where(p) {
+  margin-top: 0.85rem;
+  line-height: 1.85;
+  color: #475569;
+}
+
+.site-prose :where(ul, ol) {
+  margin-top: 0.85rem;
+  margin-left: 1.25rem;
+  color: #475569;
+  line-height: 1.85;
+}
+
+.site-prose :where(ul) {
+  list-style: disc;
+}
+
+.site-prose :where(ol) {
+  list-style: decimal;
+}
+
+.site-prose :where(a) {
+  color: var(--brand-primary);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

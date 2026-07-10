@@ -1,0 +1,52 @@
+{
+  "name": "itech-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@11.11.0",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "api:types": "openapi-typescript ../Edu_Project-api-v1/docs/openapi.json -o src/lib/api/generated.ts",
+    "check": "pnpm api:types && pnpm lint && pnpm typecheck && pnpm test && pnpm build"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "5.4.0",
+    "clsx": "2.1.1",
+    "lucide-react": "0.542.0",
+    "next": "16.2.10",
+    "next-intl": "4.13.1",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "react-hook-form": "7.81.0",
+    "sanitize-html": "2.17.5",
+    "server-only": "0.0.1",
+    "sonner": "2.0.7",
+    "tailwind-merge": "3.6.0",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "@tailwindcss/postcss": "^4.3.2",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "@types/sanitize-html": "2.16.1",
+    "autoprefixer": "10.5.2",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.10",
+    "jsdom": "26.1.0",
+    "openapi-typescript": "7.13.0",
+    "playwright": "1.61.1",
+    "tailwindcss": "4.3.2",
+    "typescript": "5.9.3",
+    "vitest": "3.2.7"
+  }
+}
