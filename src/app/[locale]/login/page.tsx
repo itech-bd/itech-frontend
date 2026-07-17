@@ -7,14 +7,14 @@ import { isLocale } from "@/lib/i18n/routing";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return { title: locale === "bn" ? "লগইন" : "Login" };
+  return { title: "Login | iTechBD Ltd" };
 }
 
 export default async function LoginPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   return (
-    <AuthPageShell title="Welcome back" description="Sign in to access your student dashboard, invoices, and profile.">
+    <AuthPageShell title="Welcome back" description="Sign in to access your student dashboard, invoices, batches, and profile.">
       <LoginForm locale={locale} />
     </AuthPageShell>
   );

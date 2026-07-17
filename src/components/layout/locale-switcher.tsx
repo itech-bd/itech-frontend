@@ -17,20 +17,20 @@ export function LocaleSwitcher({ locale }: { locale: AppLocale }) {
   }
 
   return (
-    <div className="inline-flex overflow-hidden rounded-full border border-slate-200 bg-white shadow-sm">
+    <div className="inline-flex overflow-hidden rounded-lg border border-[color:var(--border-default)] bg-white shadow-sm">
       <button
         type="button"
         onClick={() => change("en")}
-        className={`px-3 py-1.5 text-xs font-bold ${locale === "en" ? "bg-[color:var(--brand-primary)] text-white" : "text-slate-700"}`}
+        className={`focus-ring px-3 py-1.5 text-xs font-bold ${locale === "en" ? "bg-[color:var(--brand-primary)] text-white" : "text-[color:var(--text-body)]"}`}
       >
         EN
       </button>
       <button
         type="button"
         onClick={() => change("bn")}
-        className={`px-3 py-1.5 text-xs font-bold ${locale === "bn" ? "bg-[color:var(--brand-primary)] text-white" : "text-slate-700"}`}
+        className={`focus-ring px-3 py-1.5 text-xs font-bold ${locale === "bn" ? "bg-[color:var(--brand-primary)] text-white" : "text-[color:var(--text-body)]"}`}
       >
-        বাং
+        BN
       </button>
     </div>
   );

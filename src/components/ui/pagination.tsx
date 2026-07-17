@@ -39,7 +39,7 @@ export function PaginationNav({
       <LocaleLink
         locale={locale}
         href={buildHref(Math.max(1, current - 1))}
-        className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
+        className="focus-ring rounded-lg border border-[color:var(--border-default)] bg-white px-4 py-2 text-sm font-bold text-[color:var(--text-body)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
       >
         Prev
       </LocaleLink>
@@ -50,8 +50,8 @@ export function PaginationNav({
           href={buildHref(page)}
           className={
             page === current
-              ? "rounded-full bg-[color:var(--brand-primary)] px-4 py-2 text-sm font-bold text-white"
-              : "rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
+              ? "focus-ring rounded-lg bg-[color:var(--brand-primary)] px-4 py-2 text-sm font-bold text-white"
+              : "focus-ring rounded-lg border border-[color:var(--border-default)] bg-white px-4 py-2 text-sm font-bold text-[color:var(--text-body)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
           }
         >
           {page}
@@ -60,7 +60,7 @@ export function PaginationNav({
       <LocaleLink
         locale={locale}
         href={buildHref(Math.min(pagination.last_page, current + 1))}
-        className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
+        className="focus-ring rounded-lg border border-[color:var(--border-default)] bg-white px-4 py-2 text-sm font-bold text-[color:var(--text-body)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
       >
         Next
       </LocaleLink>

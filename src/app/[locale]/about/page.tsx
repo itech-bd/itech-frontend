@@ -11,7 +11,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return { title: locale === "bn" ? "আমাদের সম্পর্কে" : "About" };
+  return { title: "About | iTechBD Ltd" };
 }
 
 export default async function AboutPage({
@@ -26,7 +26,7 @@ export default async function AboutPage({
     <CmsPage
       locale={locale}
       data={data}
-      heading={locale === "bn" ? "আমাদের সম্পর্কে" : "About"}
+      heading="About"
       fallbackDescription="<p>Learn more about iTechBD Ltd, our mission, and how we help learners build practical skills.</p>"
     />
   );

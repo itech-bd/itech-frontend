@@ -1,13 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --brand-primary: #2e3192;
-  --brand-primary-deep: #292b86;
-  --brand-orange: #f15a24;
-  --brand-red: #ed1c24;
-  --surface-page: #fbfbff;
-  --text-strong: #0f172a;
+  --brand-primary: #1e5eff;
+  --brand-primary-dark: #0b3ecf;
+  --brand-primary-light: #eaf1ff;
+  --brand-secondary: #10b981;
+  --brand-secondary-dark: #047857;
+  --brand-accent: #06b6d4;
+  --surface-primary: #ffffff;
+  --surface-secondary: #f6f9ff;
+  --surface-tint: #ecfdf5;
+  --text-heading: #0b1220;
+  --text-body: #334155;
   --text-muted: #64748b;
+  --border-default: #dbe4f0;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --shadow-soft: 0 18px 50px rgba(15, 23, 42, 0.08);
+  --shadow-card: 0 12px 30px rgba(15, 23, 42, 0.07);
+  --radius-card: 0.5rem;
+  --radius-control: 0.5rem;
+  --brand-primary-deep: var(--brand-primary-dark);
+  --brand-orange: var(--brand-secondary);
+  --brand-red: var(--error);
+  --surface-page: var(--surface-secondary);
+  --text-strong: var(--text-heading);
   color-scheme: light;
 }
 
@@ -17,11 +35,11 @@ html {
 
 body {
   background:
-    radial-gradient(circle at top left, rgba(46, 49, 146, 0.09), transparent 34%),
-    radial-gradient(circle at top right, rgba(241, 90, 36, 0.08), transparent 28%),
-    var(--surface-page);
-  color: var(--text-strong);
+    linear-gradient(180deg, rgba(234, 241, 255, 0.72), rgba(255, 255, 255, 0) 28rem),
+    var(--surface-secondary);
+  color: var(--text-body);
   font-family: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
 }
 
 [lang="bn"] body {
@@ -34,13 +52,80 @@ body {
 
 .brand-grid {
   background-image:
-    linear-gradient(rgba(41, 43, 134, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(41, 43, 134, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(30, 94, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 94, 255, 0.07) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
+.section-band {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-band::before {
+  background-image: linear-gradient(135deg, rgba(30, 94, 255, 0.08), rgba(16, 185, 129, 0.06));
+  clip-path: polygon(0 0, 100% 0, 100% 68%, 0 100%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.surface-card {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+}
+
+.focus-ring:focus-visible {
+  outline-color: var(--brand-primary);
+}
+
+.hero-pattern {
+  background-image:
+    linear-gradient(120deg, rgba(11, 18, 32, 0.84), rgba(14, 48, 118, 0.78)),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: auto, 46px 46px, 46px 46px;
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slow-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.reveal-in {
+  animation: reveal-up 560ms ease both;
+}
+
+.slow-float {
+  animation: slow-float 6s ease-in-out infinite;
+}
+
 .site-prose :where(h1, h2, h3) {
-  color: var(--text-strong);
+  color: var(--text-heading);
   font-weight: 800;
   line-height: 1.2;
   margin-top: 1.35rem;
@@ -62,13 +147,13 @@ body {
 .site-prose :where(p) {
   margin-top: 0.85rem;
   line-height: 1.85;
-  color: #475569;
+  color: var(--text-body);
 }
 
 .site-prose :where(ul, ol) {
   margin-top: 0.85rem;
   margin-left: 1.25rem;
-  color: #475569;
+  color: var(--text-body);
   line-height: 1.85;
 }
 
@@ -87,6 +172,15 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+
   html {
     scroll-behavior: auto;
   }

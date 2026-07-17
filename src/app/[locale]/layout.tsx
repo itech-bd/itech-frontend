@@ -4,7 +4,7 @@ import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { SiteShell } from "@/components/layout/site-shell";
 import { getPublicBootstrap } from "@/lib/api/site";
-import { isLocale, type AppLocale } from "@/lib/i18n/routing";
+import { isLocale } from "@/lib/i18n/routing";
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "bn" }];
@@ -18,7 +18,7 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   return {
-    title: locale === "bn" ? "আইটেকবিডি লিমিটেড" : "iTechBD Ltd",
+    title: "iTechBD Ltd",
   };
 }
 

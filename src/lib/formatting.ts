@@ -5,7 +5,7 @@ export function formatCurrency(
 ) {
   const value = typeof amount === "string" ? Number(amount) : amount;
   if (value === null || value === undefined || Number.isNaN(value)) {
-    return currency === "BDT" ? "৳0" : "0";
+    return currency === "BDT" ? "BDT 0" : "0";
   }
 
   return new Intl.NumberFormat(locale, {
@@ -20,9 +20,9 @@ export function formatDate(
   locale: string,
   options: Intl.DateTimeFormatOptions = {},
 ) {
-  if (!value) return "—";
+  if (!value) return "-";
   const date = value instanceof Date ? value : new Date(value);
-  if (Number.isNaN(date.getTime())) return "—";
+  if (Number.isNaN(date.getTime())) return "-";
   return new Intl.DateTimeFormat(locale, {
     dateStyle: "medium",
     ...options,

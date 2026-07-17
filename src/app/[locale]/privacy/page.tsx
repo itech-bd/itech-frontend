@@ -11,12 +11,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return { title: locale === "bn" ? "গোপনীয়তা" : "Privacy" };
+  return { title: "Privacy | iTechBD Ltd" };
 }
 
 export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const data = await getPublicPage(locale, "privacy");
-  return <CmsPage locale={locale} data={data} heading={locale === "bn" ? "গোপনীয়তা" : "Privacy"} fallbackDescription="<p>Privacy and data handling details live here.</p>" />;
+  return <CmsPage locale={locale} data={data} heading="Privacy" fallbackDescription="<p>Privacy and data handling details live here.</p>" />;
 }

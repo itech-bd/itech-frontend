@@ -7,7 +7,7 @@ import { isLocale } from "@/lib/i18n/routing";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  return { title: locale === "bn" ? "রেজিস্টার" : "Register" };
+  return { title: "Register | iTechBD Ltd" };
 }
 
 export default async function RegisterPage({ params }: { params: Promise<{ locale: string }> }) {
