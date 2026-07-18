@@ -34,7 +34,7 @@ export default async function ReviewsPage({
         locale={locale}
         kicker="Success Stories"
         title="What learners say"
-        subtitle="Approved reviews are loaded directly from the API. Video testimonials will appear here when the backend provides them."
+        subtitle="Read learner feedback and success stories from our training community."
         primaryHref="/courses"
         primaryLabel="Browse courses"
         secondaryHref="/contact"

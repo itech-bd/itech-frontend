@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowRight, BadgeCheck, BookOpenCheck, CalendarDays, MonitorPlay, WalletCards } from "lucide-react";
 import { SectionTitle } from "@/components/ui/section-title";
+import { CardSlider } from "@/components/ui/card-slider";
 import { CourseCard } from "@/components/public/course-card";
 import { BatchCard } from "@/components/public/batch-card";
 import { PageHero } from "@/components/ui/page-hero";
@@ -49,7 +50,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ l
         <div className="surface-card overflow-hidden p-3">
           <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-[linear-gradient(135deg,var(--brand-primary),var(--brand-secondary))]">
             {thumbnail ? (
-              <Image src={thumbnail} alt={course.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 42vw" priority />
+              <Image src={thumbnail} alt={course.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 42vw" priority unoptimized />
             ) : (
               <div className="brand-grid grid h-full place-items-center p-8 text-center text-2xl font-black text-white">{course.title}</div>
             )}
@@ -62,7 +63,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ l
           <div className="min-w-0 space-y-8">
             {priceRows.length ? (
               <section className="surface-card p-5">
-                <SectionTitle kicker="Course Fee" title="Transparent pricing" subtitle="Only available pricing fields from the API are shown." align="left" />
+                <SectionTitle kicker="Course Fee" title="Transparent pricing" subtitle="Current admission fees and available discounts are shown clearly." align="left" />
                 <div className="mt-6 grid gap-3 sm:grid-cols-3">
                   {priceRows.map((item) => (
                     <div key={item.label} className="rounded-lg bg-[color:var(--surface-secondary)] p-4">
@@ -84,7 +85,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ l
 
             {(course.batches ?? []).length ? (
               <section>
-                <SectionTitle kicker="Available Batches" title="Choose an upcoming batch" subtitle="Batch schedule and mentor information is loaded from the API." align="left" />
+                <SectionTitle kicker="Available Batches" title="Choose an upcoming batch" subtitle="Review batch schedule, mentor guidance, and class timing before you apply." align="left" />
                 <div className="mt-6 grid gap-5">
                   {(course.batches ?? []).map((batch) => (
                     <BatchCard key={batch.id} batch={batch} locale={locale} course={course} />
@@ -140,11 +141,11 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ l
         <section className="bg-white py-14 sm:py-16">
           <div className="mx-auto w-full max-w-7xl px-4 lg:px-8">
             <SectionTitle kicker="Related Courses" title="More options for you" align="left" />
-            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <CardSlider className="mt-8" controlsLabel="related courses">
               {data.related_courses.map((item) => (
                 <CourseCard key={item.id} course={item} locale={locale} />
               ))}
-            </div>
+            </CardSlider>
           </div>
         </section>
       ) : null}

@@ -49,7 +49,7 @@ export default async function CoursesPage({
         locale={locale}
         kicker="Course Directory"
         title={hero?.title ?? "Browse our courses"}
-        subtitle={<div className="site-prose" dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(hero?.content ?? "<p>Search and filter active courses from the API.</p>") }} />}
+        subtitle={<div className="site-prose" dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(hero?.content ?? "<p>Find the right course by skill track, schedule, and career goal.</p>") }} />}
         primaryHref="/contact"
         primaryLabel="Need guidance?"
         secondaryHref="/reviews"

@@ -82,11 +82,11 @@ export function SiteHeader({
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b bg-white/95 backdrop-blur-xl transition duration-300",
-        scrolled ? "border-[color:var(--border-default)] shadow-[0_12px_30px_rgba(15,23,42,0.08)]" : "border-transparent",
+        "sticky top-0 z-50 border-b bg-white/98 backdrop-blur-xl transition duration-300",
+        scrolled ? "border-[color:var(--border-default)] shadow-[0_10px_28px_rgba(15,23,42,0.08)]" : "border-transparent",
       )}
     >
-      <div className="hidden bg-[color:var(--text-heading)] text-white lg:block">
+      <div className="hidden bg-[color:var(--brand-primary-dark)] text-white lg:block">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-5 px-8 py-2 text-xs font-semibold">
           <div className="flex min-w-0 items-center gap-5">
             {contactItems.map((item) => {
@@ -120,7 +120,7 @@ export function SiteHeader({
         </div>
       </div>
 
-      <div className={cn("mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 transition-all duration-300 lg:px-8", scrolled ? "h-16" : "h-20")}>
+      <div className={cn("mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 transition-all duration-300 lg:px-8", scrolled ? "h-14" : "h-16")}>
         <LocaleLink href="/" locale={locale} className="focus-ring flex min-w-0 items-center">
           <BrandLogo logoUrl={logoUrl} compact={scrolled} />
         </LocaleLink>
@@ -129,12 +129,14 @@ export function SiteHeader({
           {nav.map((item) =>
             item.children?.length ? (
               <div key={item.key} className="group relative">
-                <NavItemLink
-                  item={item}
+                <LocaleLink
+                  href={item.href}
                   locale={locale}
-                  className="text-[color:var(--text-body)] hover:bg-[color:var(--brand-primary-light)] hover:text-[color:var(--brand-primary)]"
-                />
-                <ChevronDown aria-hidden className="pointer-events-none absolute right-1 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[color:var(--text-muted)]" />
+                  className="focus-ring inline-flex min-h-10 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold uppercase text-[color:var(--text-heading)] transition hover:bg-[color:var(--surface-tint)] hover:text-[color:var(--brand-secondary)]"
+                >
+                  <span>{item.label}</span>
+                  <ChevronDown aria-hidden className="h-3.5 w-3.5 shrink-0 text-[color:var(--text-muted)] transition group-hover:text-[color:var(--brand-secondary)]" />
+                </LocaleLink>
                 <div className="invisible absolute left-0 top-full z-20 w-72 pt-3 opacity-0 transition duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
                   <div className="rounded-lg border border-[color:var(--border-default)] bg-white p-2 shadow-[var(--shadow-soft)]">
                     {item.children.map((child) => (
@@ -142,7 +144,7 @@ export function SiteHeader({
                         key={child.key}
                         locale={locale}
                         href={child.href}
-                        className="focus-ring block rounded-lg px-4 py-3 text-sm font-bold text-[color:var(--text-body)] transition hover:bg-[color:var(--brand-primary-light)] hover:text-[color:var(--brand-primary)]"
+                        className="focus-ring block rounded-lg px-4 py-3 text-sm font-bold text-[color:var(--text-body)] transition hover:bg-[color:var(--surface-tint)] hover:text-[color:var(--brand-secondary)]"
                       >
                         {child.label}
                       </LocaleLink>
@@ -155,7 +157,7 @@ export function SiteHeader({
                 key={item.key}
                 item={item}
                 locale={locale}
-                className="text-[color:var(--text-body)] hover:bg-[color:var(--brand-primary-light)] hover:text-[color:var(--brand-primary)]"
+                className="text-xs uppercase text-[color:var(--text-heading)] hover:bg-[color:var(--surface-tint)] hover:text-[color:var(--brand-secondary)]"
               />
             ),
           )}
@@ -174,7 +176,7 @@ export function SiteHeader({
             <LocaleLink
               href="/register"
               locale={locale}
-              className="focus-ring inline-flex min-h-10 items-center gap-2 rounded-lg bg-[color:var(--brand-primary)] px-4 py-2 text-sm font-extrabold text-white shadow-[var(--shadow-card)] transition hover:bg-[color:var(--brand-primary-dark)]"
+              className="focus-ring inline-flex min-h-10 items-center gap-2 rounded-lg bg-[color:var(--brand-secondary)] px-4 py-2 text-sm font-extrabold text-white shadow-[var(--shadow-card)] transition hover:bg-[color:var(--brand-secondary-dark)]"
             >
               Apply Now
               <ArrowRight aria-hidden className="h-4 w-4" />
@@ -237,7 +239,7 @@ export function SiteHeader({
                           locale={locale}
                           href={child.href}
                           onClick={() => setOpen(false)}
-                          className="focus-ring rounded-lg px-4 py-3 text-sm font-bold text-[color:var(--text-body)] hover:bg-[color:var(--brand-primary-light)]"
+                          className="focus-ring rounded-lg px-4 py-3 text-sm font-bold text-[color:var(--text-body)] hover:bg-[color:var(--surface-tint)]"
                         >
                           {child.label}
                         </LocaleLink>
@@ -260,7 +262,7 @@ export function SiteHeader({
               href="/courses"
               locale={locale}
               onClick={() => setOpen(false)}
-              className="focus-ring inline-flex min-h-11 items-center justify-center rounded-lg bg-[color:var(--brand-primary)] px-5 py-3 text-sm font-extrabold text-white"
+              className="focus-ring inline-flex min-h-11 items-center justify-center rounded-lg bg-[color:var(--brand-secondary)] px-5 py-3 text-sm font-extrabold text-white"
             >
               Browse Courses
             </LocaleLink>

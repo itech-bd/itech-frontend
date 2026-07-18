@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { UserRound } from "lucide-react";
 import { SectionTitle } from "@/components/ui/section-title";
+import { CardSlider } from "@/components/ui/card-slider";
 import { CourseCard } from "@/components/public/course-card";
 import { PageHero } from "@/components/ui/page-hero";
 import { getPublicMentor } from "@/lib/api/site";
@@ -37,7 +38,7 @@ export default async function MentorDetailPage({ params }: { params: Promise<{ l
         <div className="surface-card mx-auto max-w-sm p-4">
           <div className="relative aspect-square overflow-hidden rounded-lg bg-[linear-gradient(135deg,var(--brand-primary),var(--brand-secondary))]">
             {profileImage ? (
-              <Image src={profileImage} alt={data.mentor.name} fill className="object-cover" sizes="(max-width: 1024px) 80vw, 320px" priority />
+              <Image src={profileImage} alt={data.mentor.name} fill className="object-cover" sizes="(max-width: 1024px) 80vw, 320px" priority unoptimized />
             ) : (
               <div className="brand-grid grid h-full place-items-center text-white">
                 <UserRound aria-hidden className="h-20 w-20" />
@@ -57,11 +58,11 @@ export default async function MentorDetailPage({ params }: { params: Promise<{ l
         <section className="bg-white py-14 sm:py-16">
           <div className="mx-auto w-full max-w-7xl px-4 lg:px-8">
             <SectionTitle kicker="Related Courses" title="Courses connected with this mentor" align="left" />
-            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <CardSlider className="mt-8" controlsLabel="mentor courses">
               {data.related_courses.map((course) => (
                 <CourseCard key={course.id} course={course} locale={locale} />
               ))}
-            </div>
+            </CardSlider>
           </div>
         </section>
       ) : null}

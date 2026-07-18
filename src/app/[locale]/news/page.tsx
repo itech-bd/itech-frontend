@@ -35,7 +35,7 @@ export default async function NewsPage({
         locale={locale}
         kicker="News"
         title="Latest announcements"
-        subtitle="Published news and institute updates appear automatically from the API."
+        subtitle="Stay updated with announcements, events, and institute news."
         primaryHref="/courses"
         primaryLabel="Browse courses"
         secondaryHref="/contact"

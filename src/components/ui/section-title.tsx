@@ -17,7 +17,7 @@ export function SectionTitle({
   return (
     <div className={cn("flex flex-col gap-3", align === "left" ? "items-start text-left" : "items-center text-center")}>
       {kicker ? (
-        <div className="inline-flex items-center gap-2 rounded-lg border border-[color:var(--brand-primary)]/15 bg-[color:var(--brand-primary-light)] px-3 py-2 text-xs font-bold uppercase text-[color:var(--brand-primary-dark)]">
+        <div className="inline-flex items-center gap-2 rounded-lg border border-[color:var(--brand-secondary)]/20 bg-[color:var(--surface-tint)] px-3 py-2 text-xs font-black uppercase tracking-[0.12em] text-[color:var(--brand-secondary-dark)]">
           <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--brand-secondary)]" />
           {kicker}
         </div>

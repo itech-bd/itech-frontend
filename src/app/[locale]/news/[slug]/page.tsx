@@ -38,7 +38,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ loc
         <div className="surface-card overflow-hidden p-3">
           <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-[linear-gradient(135deg,var(--brand-primary),var(--brand-secondary))]">
             {image ? (
-              <Image src={image} alt={data.news.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 42vw" priority />
+              <Image src={image} alt={data.news.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 42vw" priority unoptimized />
             ) : (
               <div className="brand-grid grid h-full place-items-center text-white">
                 <Newspaper aria-hidden className="h-14 w-14" />

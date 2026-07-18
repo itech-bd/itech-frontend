@@ -35,7 +35,7 @@ export default async function MentorsPage({
         locale={locale}
         kicker="Mentors"
         title="Learn from industry practitioners"
-        subtitle="Search the mentor directory loaded from the Laravel API and view expertise, experience, and related courses."
+        subtitle="Meet experienced instructors, explore their expertise, and find the courses they guide."
         primaryHref="/courses"
         primaryLabel="Browse courses"
         secondaryHref="/contact"

@@ -31,7 +31,7 @@ export function SiteFooter({
   ].filter((entry): entry is [string, string] => Boolean(entry[1]));
 
   return (
-    <footer className="mt-16 border-t border-[color:var(--border-default)] bg-white text-[color:var(--text-body)]">
+    <footer className="mt-16 border-t border-[color:var(--brand-secondary)]/20 bg-[linear-gradient(180deg,#fff8ef_0%,#fff2de_100%)] text-[color:var(--text-body)]">
       <div className="mx-auto w-full max-w-7xl px-4 py-12 lg:px-8 lg:py-16">
         <div className="grid gap-10 lg:grid-cols-[1.05fr_1.35fr_.95fr] lg:items-start">
           <div>

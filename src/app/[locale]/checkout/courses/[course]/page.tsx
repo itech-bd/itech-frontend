@@ -21,7 +21,7 @@ export default async function CheckoutCoursePage({ params }: { params: Promise<{
   return (
     <main className="py-14">
       <div className="mx-auto w-full max-w-4xl px-4 lg:px-8">
-        <SectionTitle kicker="Checkout" title={preview.course.title} subtitle="Select an API-approved batch and place your order." align="left" />
+        <SectionTitle kicker="Checkout" title={preview.course.title} subtitle="Select your preferred batch and complete your admission request." align="left" />
         <div className="mt-8 grid gap-6 lg:grid-cols-[1.15fr_.85fr]">
           <CheckoutForm action={action} preview={preview} locale={locale} />
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">

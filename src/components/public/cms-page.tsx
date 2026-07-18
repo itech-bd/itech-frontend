@@ -4,6 +4,7 @@ import { SectionTitle } from "@/components/ui/section-title";
 import { PageHero } from "@/components/ui/page-hero";
 import { CTASection } from "@/components/ui/cta-section";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
+import { CardSlider } from "@/components/ui/card-slider";
 import { sanitizeCmsHtml } from "@/lib/sanitize";
 import { resolveMediaUrl } from "@/lib/media";
 import type { AppLocale } from "@/lib/i18n/routing";
@@ -50,7 +51,7 @@ export function CmsPage({
         <div className="surface-card overflow-hidden p-3">
           <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-[linear-gradient(135deg,var(--brand-primary),var(--brand-secondary))]">
             {heroImage ? (
-              <Image src={heroImage} alt={hero?.title ?? heading} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 42vw" priority />
+              <Image src={heroImage} alt={hero?.title ?? heading} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 42vw" priority unoptimized />
             ) : (
               <div className="brand-grid grid h-full place-items-center text-white">
                 <ImageIcon aria-hidden className="h-14 w-14" />
@@ -88,7 +89,7 @@ export function CmsPage({
                 <article key={item.id} className="surface-card overflow-hidden">
                   {image ? (
                     <div className="relative aspect-[16/9] bg-[color:var(--surface-secondary)]">
-                      <Image src={image} alt={item.title ?? heading} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+                      <Image src={image} alt={item.title ?? heading} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" unoptimized />
                     </div>
                   ) : null}
                   <div className="p-5">
@@ -109,12 +110,12 @@ export function CmsPage({
       {featuredCourses?.length ? (
         <section className="bg-white py-14 sm:py-16">
           <div className="mx-auto w-full max-w-7xl px-4 lg:px-8">
-            <SectionTitle kicker="Featured Courses" title="Popular options" subtitle="These are highlighted from the current API response." align="left" />
-            <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <SectionTitle kicker="Featured Courses" title="Popular options" subtitle="Explore handpicked courses that are popular with learners." align="left" />
+            <CardSlider className="mt-8" controlsLabel="featured courses">
               {featuredCourses.map((course) => (
                 <CourseCard key={course.id} course={course} locale={locale} />
               ))}
-            </div>
+            </CardSlider>
           </div>
         </section>
       ) : null}

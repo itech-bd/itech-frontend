@@ -1,29 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --brand-primary: #1e5eff;
-  --brand-primary-dark: #0b3ecf;
-  --brand-primary-light: #eaf1ff;
-  --brand-secondary: #10b981;
-  --brand-secondary-dark: #047857;
-  --brand-accent: #06b6d4;
+  --font-instrument-sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-hind-siliguri: "Noto Sans Bengali", "Hind Siliguri", "Vrinda", "Segoe UI", sans-serif;
+  --brand-primary: #0f4aa3;
+  --brand-primary-dark: #0b3473;
+  --brand-primary-light: #edf4ff;
+  --brand-secondary: #ff7a1a;
+  --brand-secondary-dark: #e45f00;
+  --brand-accent: #2f7bff;
   --surface-primary: #ffffff;
-  --surface-secondary: #f6f9ff;
-  --surface-tint: #ecfdf5;
-  --text-heading: #0b1220;
-  --text-body: #334155;
-  --text-muted: #64748b;
-  --border-default: #dbe4f0;
-  --success: #10b981;
-  --warning: #f59e0b;
+  --surface-secondary: #f8fbff;
+  --surface-tint: #fff4e8;
+  --text-heading: #10213f;
+  --text-body: #42526b;
+  --text-muted: #71809a;
+  --border-default: #d7e2f1;
+  --success: #1b9a65;
+  --warning: #ff9a1a;
   --error: #ef4444;
   --shadow-soft: 0 18px 50px rgba(15, 23, 42, 0.08);
   --shadow-card: 0 12px 30px rgba(15, 23, 42, 0.07);
   --radius-card: 0.5rem;
   --radius-control: 0.5rem;
-  --brand-primary-deep: var(--brand-primary-dark);
+  --brand-primary-deep: #082a60;
   --brand-orange: var(--brand-secondary);
-  --brand-red: var(--error);
+  --brand-red: #f2572b;
   --surface-page: var(--surface-secondary);
   --text-strong: var(--text-heading);
   color-scheme: light;
@@ -35,7 +37,7 @@ html {
 
 body {
   background:
-    linear-gradient(180deg, rgba(234, 241, 255, 0.72), rgba(255, 255, 255, 0) 28rem),
+    linear-gradient(180deg, rgba(237, 244, 255, 0.82), rgba(255, 255, 255, 0) 24rem),
     var(--surface-secondary);
   color: var(--text-body);
   font-family: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
@@ -52,8 +54,8 @@ body {
 
 .brand-grid {
   background-image:
-    linear-gradient(rgba(30, 94, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(30, 94, 255, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(15, 74, 163, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 74, 163, 0.08) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -63,7 +65,7 @@ body {
 }
 
 .section-band::before {
-  background-image: linear-gradient(135deg, rgba(30, 94, 255, 0.08), rgba(16, 185, 129, 0.06));
+  background-image: linear-gradient(135deg, rgba(15, 74, 163, 0.08), rgba(255, 122, 26, 0.09));
   clip-path: polygon(0 0, 100% 0, 100% 68%, 0 100%);
   content: "";
   inset: 0;
@@ -89,7 +91,7 @@ body {
 
 .hero-pattern {
   background-image:
-    linear-gradient(120deg, rgba(11, 18, 32, 0.84), rgba(14, 48, 118, 0.78)),
+    linear-gradient(120deg, rgba(8, 42, 96, 0.94), rgba(15, 74, 163, 0.88)),
     linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
     linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: auto, 46px 46px, 46px 46px;

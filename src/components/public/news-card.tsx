@@ -14,7 +14,7 @@ export function NewsCard({ news, locale }: { news: NewsSummary; locale: AppLocal
       <LocaleLink locale={locale} href={`/news/${news.slug}`} className="focus-ring block">
         <div className="relative aspect-[16/9] overflow-hidden bg-[linear-gradient(135deg,var(--brand-primary),var(--brand-secondary))]">
           {image ? (
-            <Image src={image} alt={news.title} fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" />
+            <Image src={image} alt={news.title} fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" unoptimized />
           ) : (
             <div className="brand-grid flex h-full items-center justify-center p-8 text-center text-xl font-black text-white">
               <Newspaper aria-hidden className="mr-2 h-6 w-6" />

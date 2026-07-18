@@ -46,7 +46,7 @@ export function HeroSection({
           <div className="rounded-[1.5rem] bg-gradient-to-br from-[color:var(--brand-primary)] to-[color:var(--brand-orange)] p-8 text-white">
             <div className="text-sm font-bold uppercase tracking-[0.18em] text-white/70">Start Learning</div>
             <h2 className="mt-3 text-3xl font-black sm:text-4xl">Join an upcoming batch and build professional skills.</h2>
-            <p className="mt-3 text-white/80">Course, batch, mentor and enrollment data will stay dynamic from your API.</p>
+            <p className="mt-3 text-white/80">Course, batch, mentor, and admission details stay updated as new opportunities open.</p>
           </div>
         </div>
       </div>

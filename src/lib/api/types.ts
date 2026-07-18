@@ -153,6 +153,7 @@ export type PublicHome = {
   };
   popular_courses: CourseSummary[];
   course_tracks: Array<{ name: string; course_ids: number[] }>;
+  ongoing_batches?: BatchSummary[];
   upcoming_batches: BatchSummary[];
   mentors: MentorSummary[];
   reviews: ReviewSummary[];

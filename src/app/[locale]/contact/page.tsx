@@ -76,7 +76,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
       <section className="py-14 sm:py-16">
         <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 lg:grid-cols-[.9fr_1.1fr] lg:px-8">
           <div>
-            <SectionTitle kicker="Get in Touch" title="Speak with our admission team" subtitle="Send your question and the team will respond through the existing Laravel contact endpoint." align="left" />
+            <SectionTitle kicker="Get in Touch" title="Speak with our admission team" subtitle="Send your question and our team will get back to you shortly." align="left" />
             <div className="mt-6 grid gap-3">
               {cards.map((card) => {
                 const Icon = card.icon;
