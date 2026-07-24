@@ -42,7 +42,7 @@ export function StudentShell({
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_8%_4%,rgba(15,74,163,0.12),transparent_30%),radial-gradient(circle_at_92%_8%,rgba(255,122,26,0.13),transparent_28%),linear-gradient(180deg,#f7fbff_0%,#fffaf4_100%)]">
-      <div className="mx-auto grid min-h-screen w-full max-w-7xl gap-5 px-4 py-5 lg:grid-cols-[18rem_1fr] lg:px-8 lg:py-7">
+      <div className="grid min-h-screen w-full gap-5 px-4 py-4 sm:px-5 lg:grid-cols-[18rem_minmax(0,1fr)] lg:px-5 lg:py-5 2xl:px-6">
         <aside className="hidden self-start rounded-[1.75rem] border border-white/80 bg-white/80 p-4 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl lg:sticky lg:top-24 lg:block">
           <div className="overflow-hidden rounded-[1.4rem] bg-[linear-gradient(135deg,var(--brand-primary-deep),var(--brand-primary)_62%,var(--brand-secondary))] p-5 text-white">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/12 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.18em] text-white/82">
@@ -138,7 +138,7 @@ export function StudentShell({
             </nav>
           </div>
 
-          <div className="rounded-[2rem] border border-white/80 bg-white/70 p-3 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-5">
+          <div className="min-h-[calc(100vh-2rem)] rounded-[2rem] border border-white/80 bg-white/70 p-3 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-5 lg:min-h-[calc(100vh-2.5rem)]">
             {children}
           </div>
         </div>

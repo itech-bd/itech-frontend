@@ -1,13 +1,30 @@
-const assetBase =
-  process.env.NEXT_PUBLIC_LARAVEL_ASSET_URL ??
-  process.env.NEXT_PUBLIC_LARAVEL_API_URL ??
-  process.env.LARAVEL_API_URL ??
-  "";
-const storageMediaEnabled = process.env.NEXT_PUBLIC_LARAVEL_STORAGE_MEDIA !== "disabled";
 const fallbackBrandLogo = "/brand/itechbd-logo.png";
+const mediaDirectoryPrefixes = [
+  "courses/",
+  "favicon/",
+  "frontend/",
+  "home/",
+  "logo/",
+  "news/",
+  "profile-images/",
+  "uploads/",
+];
 
 function cleanBase(value: string) {
   return value.replace(/\/$/, "");
+}
+
+function assetBase() {
+  return cleanBase(
+    process.env.NEXT_PUBLIC_LARAVEL_ASSET_URL ??
+      process.env.NEXT_PUBLIC_LARAVEL_API_URL ??
+      process.env.LARAVEL_API_URL ??
+      "",
+  );
+}
+
+function storageMediaEnabled() {
+  return process.env.NEXT_PUBLIC_LARAVEL_STORAGE_MEDIA !== "disabled";
 }
 
 function toMediaProxyPath(pathname: string) {
@@ -15,32 +32,53 @@ function toMediaProxyPath(pathname: string) {
   if (normalized.startsWith("storage/")) {
     return `/media/${normalized.slice("storage/".length)}`;
   }
-  return pathname;
+  if (normalized.startsWith("media/")) {
+    return `/${normalized}`;
+  }
+  return `/media/${normalized}`;
+}
+
+function isLaravelMediaPath(pathname: string) {
+  const normalized = pathname.replace(/^\/+/, "");
+  return normalized.startsWith("storage/") || normalized.startsWith("media/");
+}
+
+function isKnownRelativeMediaPath(value: string) {
+  const normalized = value.replace(/^\/+/, "");
+  return mediaDirectoryPrefixes.some((prefix) => normalized.startsWith(prefix));
+}
+
+function fromConfiguredAssetBase(pathname: string, suffix = "") {
+  const base = assetBase();
+  if (!storageMediaEnabled()) return null;
+  if (!base) return `${toMediaProxyPath(pathname)}${suffix}`;
+  return `${base}${toMediaProxyPath(pathname)}${suffix}`;
 }
 
 export function resolveMediaUrl(value: string | null | undefined) {
   if (!value) return null;
 
-  if ((value.startsWith("/storage/") || value.startsWith("/media/")) && assetBase) {
-    if (!storageMediaEnabled) return null;
-    return `${cleanBase(assetBase)}${toMediaProxyPath(value)}`;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  if (isLaravelMediaPath(trimmed)) {
+    return fromConfiguredAssetBase(trimmed);
   }
 
   try {
-    const url = new URL(value);
-    if (
-      (url.hostname === "localhost" || url.hostname === "127.0.0.1") &&
-      (url.pathname.startsWith("/storage/") || url.pathname.startsWith("/media/")) &&
-      assetBase
-    ) {
-      if (!storageMediaEnabled) return null;
-      return `${cleanBase(assetBase)}${toMediaProxyPath(url.pathname)}${url.search}`;
+    const url = new URL(trimmed);
+    if (isLaravelMediaPath(url.pathname)) {
+      return fromConfiguredAssetBase(url.pathname, `${url.search}${url.hash}`);
     }
   } catch {
-    return value;
+    if (isKnownRelativeMediaPath(trimmed)) {
+      return fromConfiguredAssetBase(trimmed);
+    }
+
+    return trimmed;
   }
 
-  return value;
+  return trimmed;
 }
 
 export function resolveBrandLogoUrl(value: string | null | undefined) {

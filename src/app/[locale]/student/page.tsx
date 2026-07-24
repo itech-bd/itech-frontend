@@ -1,9 +1,23 @@
 import { notFound } from "next/navigation";
-import { ArrowRight, CalendarDays, Clock3, FileText, GraduationCap, MonitorPlay } from "lucide-react";
+import type { ReactNode } from "react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BookOpenCheck,
+  CalendarDays,
+  CircleDashed,
+  CirclePlay,
+  Clock3,
+  FileText,
+  GraduationCap,
+  MonitorPlay,
+  Video,
+} from "lucide-react";
 import { StudentStats } from "@/components/student/student-stats";
 import { StudentCard, StudentEmptyState, StudentPageHeader, StudentStatusBadge } from "@/components/student/student-panel-ui";
 import { LocaleLink } from "@/components/ui/link";
 import { getStudentDashboard } from "@/lib/api/site";
+import type { StudentDashboard } from "@/lib/api/types";
 import { formatCurrency, formatDate } from "@/lib/formatting";
 import { isLocale } from "@/lib/i18n/routing";
 
@@ -54,37 +68,10 @@ export default async function StudentDashboardPage({ params }: { params: Promise
             </div>
           </div>
 
-          <div className="space-y-3 p-5 sm:p-6">
+          <div className="grid gap-4 p-5 sm:p-6">
             {dashboard.upcoming_schedules.length ? (
-              dashboard.upcoming_schedules.map((schedule) => (
-                <div key={schedule.id} className="grid gap-4 rounded-2xl border border-[color:var(--border-default)]/70 bg-white p-4 transition hover:border-[color:var(--brand-primary)]/30 hover:bg-[color:var(--surface-secondary)] sm:grid-cols-[auto_1fr_auto] sm:items-center">
-                  <div className="grid h-14 w-14 place-items-center rounded-2xl bg-[color:var(--brand-primary-light)] text-center text-[color:var(--brand-primary)]">
-                    <CalendarDays aria-hidden className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-black text-[color:var(--text-heading)]">{schedule.topic}</h3>
-                    <p className="mt-1 text-sm font-semibold text-[color:var(--text-muted)]">
-                      {formatDate(schedule.class_date, locale)} - {schedule.batch?.name ?? "Batch"}
-                    </p>
-                    {schedule.batch?.course ? (
-                      <p className="mt-1 text-xs font-bold text-[color:var(--brand-primary)]">{schedule.batch.course.title}</p>
-                    ) : null}
-                  </div>
-                  {schedule.live_class_link ? (
-                    <a
-                      href={schedule.live_class_link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="focus-ring inline-flex min-h-10 items-center justify-center rounded-xl bg-[color:var(--brand-primary)] px-4 py-2 text-xs font-extrabold text-white transition hover:bg-[color:var(--brand-primary-dark)]"
-                    >
-                      Join class
-                    </a>
-                  ) : (
-                    <span className="inline-flex min-h-10 items-center justify-center rounded-xl bg-[color:var(--surface-secondary)] px-4 py-2 text-xs font-extrabold text-[color:var(--text-muted)]">
-                      Scheduled
-                    </span>
-                  )}
-                </div>
+              dashboard.upcoming_schedules.map((schedule, index) => (
+                <UpcomingClassCard key={schedule.id} schedule={schedule} locale={locale} featured={index === 0} />
               ))
             ) : (
               <StudentEmptyState title="No upcoming classes yet" message="Your approved batch schedule will appear here when classes are available." />
@@ -179,4 +166,166 @@ export default async function StudentDashboardPage({ params }: { params: Promise
       </section>
     </main>
   );
+}
+
+type DashboardSchedule = StudentDashboard["upcoming_schedules"][number];
+
+function UpcomingClassCard({
+  schedule,
+  locale,
+  featured,
+}: {
+  schedule: DashboardSchedule;
+  locale: "en" | "bn";
+  featured: boolean;
+}) {
+  const month = formatScheduleDatePart(schedule.class_date, locale, { month: "short" });
+  const day = formatScheduleDatePart(schedule.class_date, locale, { day: "2-digit" });
+  const weekday = formatScheduleDatePart(schedule.class_date, locale, { weekday: "long" });
+  const distanceLabel = getScheduleDistanceLabel(schedule.class_date, locale);
+
+  return (
+    <article
+      className={
+        featured
+          ? "rounded-[1.35rem] border border-[color:var(--brand-secondary)]/35 bg-[linear-gradient(135deg,#fff7f0_0%,#ffffff_48%,#f4f8ff_100%)] p-4 shadow-[0_14px_32px_rgba(255,122,26,0.09)]"
+          : "rounded-[1.35rem] border border-[color:var(--border-default)]/75 bg-white p-4 transition hover:border-[color:var(--brand-primary)]/30 hover:bg-[color:var(--surface-secondary)]"
+      }
+    >
+      <div className="grid gap-4 xl:grid-cols-[5.25rem_minmax(0,1fr)_minmax(17rem,.42fr)] xl:items-center">
+        <div className="flex items-center gap-3 xl:block">
+          <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-white text-center shadow-sm ring-1 ring-[color:var(--border-default)]/75">
+            <div>
+              <div className="text-xs font-black uppercase text-[color:var(--brand-primary)]">{month}</div>
+              <div className="mt-1 text-3xl font-black leading-none text-[color:var(--text-heading)]">{day}</div>
+            </div>
+          </div>
+          <div className="min-w-0 xl:mt-3">
+            <span className={featured ? "rounded-full bg-[color:var(--brand-secondary)] px-3 py-1 text-xs font-black text-white" : "rounded-full bg-[color:var(--brand-primary-light)] px-3 py-1 text-xs font-black text-[color:var(--brand-primary-dark)]"}>
+              {featured ? "Next class" : distanceLabel}
+            </span>
+            <p className="mt-2 truncate text-xs font-bold text-[color:var(--text-muted)]">{weekday}</p>
+          </div>
+        </div>
+
+        <div className="min-w-0">
+          <h3 className="text-lg font-black leading-snug text-[color:var(--text-heading)]">{schedule.topic}</h3>
+          <div className="mt-3 grid gap-2 md:grid-cols-2">
+            <div className="flex min-w-0 items-center gap-2 rounded-xl bg-white/85 px-3 py-2 text-sm font-bold text-[color:var(--text-body)] ring-1 ring-[color:var(--border-default)]/70">
+              <BookOpenCheck aria-hidden className="h-4 w-4 shrink-0 text-[color:var(--brand-primary)]" />
+              <span className="truncate">{schedule.batch?.course?.title ?? "Course"}</span>
+            </div>
+            <div className="flex min-w-0 items-center gap-2 rounded-xl bg-white/85 px-3 py-2 text-sm font-bold text-[color:var(--text-body)] ring-1 ring-[color:var(--border-default)]/70">
+              <GraduationCap aria-hidden className="h-4 w-4 shrink-0 text-[color:var(--brand-secondary)]" />
+              <span className="truncate">{schedule.batch?.name ?? "Batch"}</span>
+            </div>
+          </div>
+          <p className="mt-3 flex items-center gap-2 text-sm font-semibold text-[color:var(--text-muted)]">
+            <CalendarDays aria-hidden className="h-4 w-4 text-[color:var(--brand-primary)]" />
+            {formatDate(schedule.class_date, locale)}
+          </p>
+        </div>
+
+        <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+          <ScheduleAction
+            href={schedule.live_class_link}
+            label="Join live class"
+            emptyLabel="Live link pending"
+            tone="live"
+            icon={<Video aria-hidden className="h-4 w-4" />}
+          />
+          <ScheduleAction
+            href={schedule.recorded_video_link}
+            label="Watch recording"
+            emptyLabel="Recording after class"
+            tone="recording"
+            icon={<CirclePlay aria-hidden className="h-4 w-4" />}
+          />
+          {schedule.batch?.id ? (
+            <LocaleLink
+              locale={locale}
+              href={`/student/batches/${schedule.batch.id}`}
+              className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[color:var(--border-default)] bg-white px-4 py-2.5 text-xs font-black text-[color:var(--text-heading)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)] sm:col-span-2 xl:col-span-1 2xl:col-span-2"
+            >
+              Batch routine
+              <ArrowUpRight aria-hidden className="h-4 w-4" />
+            </LocaleLink>
+          ) : null}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function ScheduleAction({
+  href,
+  label,
+  emptyLabel,
+  tone,
+  icon,
+}: {
+  href: string | null;
+  label: string;
+  emptyLabel: string;
+  tone: "live" | "recording";
+  icon: ReactNode;
+}) {
+  if (!href) {
+    return (
+      <span className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-dashed border-[color:var(--border-default)] bg-white/65 px-4 py-2.5 text-xs font-black text-[color:var(--text-muted)]">
+        <CircleDashed aria-hidden className="h-4 w-4" />
+        {emptyLabel}
+      </span>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className={
+        tone === "live"
+          ? "focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[color:var(--brand-primary)] px-4 py-2.5 text-xs font-black text-white transition hover:bg-[color:var(--brand-primary-dark)]"
+          : "focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[color:var(--brand-secondary)] px-4 py-2.5 text-xs font-black text-white transition hover:bg-[color:var(--brand-secondary-dark)]"
+      }
+    >
+      {icon}
+      {label}
+      <ArrowUpRight aria-hidden className="h-4 w-4" />
+    </a>
+  );
+}
+
+function getLocalDate(value: string | null | undefined) {
+  if (!value) return null;
+  const normalized = /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00` : value;
+  const date = new Date(normalized);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function formatScheduleDatePart(
+  value: string | null | undefined,
+  locale: string,
+  options: Intl.DateTimeFormatOptions,
+) {
+  const date = getLocalDate(value);
+  if (!date) return "-";
+  return new Intl.DateTimeFormat(locale, options).format(date);
+}
+
+function getScheduleDistanceLabel(value: string | null | undefined, locale: string) {
+  const date = getLocalDate(value);
+  if (!date) return "Scheduled";
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const target = new Date(date);
+  target.setHours(0, 0, 0, 0);
+  const days = Math.round((target.getTime() - today.getTime()) / 86_400_000);
+
+  if (days === 0) return "Today";
+  if (days === 1) return "Tomorrow";
+  if (days > 1) return `${new Intl.NumberFormat(locale).format(days)} days left`;
+  return "Past class";
 }

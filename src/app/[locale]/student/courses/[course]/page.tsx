@@ -33,7 +33,7 @@ export default async function StudentCourseDetailPage({ params }: { params: Prom
         }
       />
 
-      <section className="grid gap-5 xl:grid-cols-[.9fr_1.1fr]">
+      <section className="grid min-h-0 gap-5 xl:grid-cols-[.9fr_1.1fr]">
         <StudentCard className="overflow-hidden p-0">
           <div className="relative aspect-[16/10] bg-[linear-gradient(135deg,var(--brand-primary),var(--brand-secondary))]">
             {thumbnail ? (
@@ -50,13 +50,13 @@ export default async function StudentCourseDetailPage({ params }: { params: Prom
           </div>
         </StudentCard>
 
-        <StudentCard>
+        <StudentCard className="min-h-0 xl:flex xl:max-h-[calc(100vh-25rem)] xl:flex-col xl:overflow-hidden">
           <div className="inline-flex items-center gap-2 rounded-full bg-[color:var(--brand-primary-light)] px-3 py-1.5 text-xs font-black text-[color:var(--brand-primary-dark)]">
             <Layers3 aria-hidden className="h-4 w-4" />
             Course overview
           </div>
           {data.course.description ? (
-            <div className="site-prose mt-4 text-sm leading-7" dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(data.course.description) }} />
+            <div className="site-prose mt-4 min-h-0 text-sm leading-7 xl:flex-1 xl:overflow-y-auto xl:pr-3" dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(data.course.description) }} />
           ) : (
             <p className="mt-4 text-sm leading-7 text-[color:var(--text-body)]">Course details will appear here when they are added.</p>
           )}

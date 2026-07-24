@@ -78,9 +78,9 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ l
               </section>
             ) : null}
 
-            <section className="surface-card p-5">
+            <section className="surface-card p-5 lg:flex lg:max-h-[calc(100vh-8rem)] lg:flex-col lg:overflow-hidden">
               <SectionTitle kicker="Overview" title="What you will learn" align="left" />
-              <article className="site-prose mt-5" dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(course.description) }} />
+              <article className="site-prose mt-5 min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-3" dangerouslySetInnerHTML={{ __html: sanitizeCmsHtml(course.description) }} />
             </section>
 
             {(course.batches ?? []).length ? (
