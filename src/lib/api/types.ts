@@ -194,6 +194,7 @@ export type AuthUser = {
 export type LoginResult = {
   token_type: string | null;
   access_token: string | null;
+  login_handoff_url: string | null;
   user: AuthUser;
   must_change_password: boolean;
 };

@@ -14,6 +14,11 @@ export function LoginForm({ locale }: { locale: AppLocale }) {
 
   useEffect(() => {
     if (state.ok && state.redirectTo) {
+      if (/^https?:\/\//i.test(state.redirectTo)) {
+        window.location.replace(state.redirectTo);
+        return;
+      }
+
       router.replace(state.redirectTo);
     }
   }, [router, state.ok, state.redirectTo]);

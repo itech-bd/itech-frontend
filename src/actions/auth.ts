@@ -3,6 +3,8 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { login, logout, register, forgotPassword, resetPassword, resendVerification } from "@/lib/api/site";
+import { env } from "@/lib/env";
+import { resolveLoginRedirect } from "@/lib/auth/login-redirect";
 import { authCookieName, authCookieOptions } from "@/lib/auth/cookies";
 import { isApiError } from "@/lib/api/errors";
 import type { LocaleCode } from "@/lib/api/types";
@@ -38,7 +40,13 @@ export async function loginAction(_: ActionState, formData: FormData): Promise<A
     return {
       ok: true,
       message: "Login successful.",
-      redirectTo: String(formData.get("next") ?? `/${locale}/student`),
+      redirectTo: resolveLoginRedirect({
+        roles: result.user.roles,
+        loginHandoffUrl: result.login_handoff_url,
+        backendDashboardUrl: `${env.LARAVEL_API_URL}/dashboard`,
+        next: String(formData.get("next") ?? ""),
+        locale,
+      }),
     };
   } catch (error) {
     if (isApiError(error)) {
