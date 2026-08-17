@@ -43,8 +43,8 @@ export function StudentShell({
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_8%_4%,rgba(15,74,163,0.12),transparent_30%),radial-gradient(circle_at_92%_8%,rgba(255,122,26,0.13),transparent_28%),linear-gradient(180deg,#f7fbff_0%,#fffaf4_100%)]">
       <div className="grid min-h-screen w-full gap-5 px-4 pb-4 pt-0 sm:px-5 lg:grid-cols-[18rem_minmax(0,1fr)] lg:px-5 lg:pb-5 lg:pt-0 2xl:px-6">
-        <aside className="hidden self-start rounded-[1.75rem] border border-white/80 bg-white/80 p-4 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl lg:sticky lg:top-5 lg:block">
-          <div className="overflow-hidden rounded-[1.4rem] bg-[linear-gradient(135deg,var(--brand-primary-deep),var(--brand-primary)_62%,var(--brand-secondary))] p-5 text-white">
+        <aside className="hidden self-start rounded-[1.75rem] border border-white/80 bg-white/80 p-4 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur-xl lg:fixed lg:bottom-5 lg:left-5 lg:top-5 lg:z-30 lg:flex lg:w-72 lg:flex-col 2xl:left-6">
+          <div className="shrink-0 overflow-hidden rounded-[1.4rem] bg-[linear-gradient(135deg,var(--brand-primary-deep),var(--brand-primary)_62%,var(--brand-secondary))] p-5 text-white">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/12 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.18em] text-white/82">
               <Sparkles aria-hidden className="h-3.5 w-3.5 text-[color:var(--brand-secondary)]" />
               Student Panel
@@ -70,26 +70,28 @@ export function StudentShell({
             </div>
           </div>
 
-          <nav className="mt-4 grid gap-1.5" aria-label="Student navigation">
-            {dashboard.menu.map((item) => {
-              const Icon = navIcons[item.key as keyof typeof navIcons] ?? GraduationCap;
-              return (
-                <LocaleLink
-                  key={item.key}
-                  href={item.href}
-                  locale={locale}
-                  className="focus-ring group flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-extrabold text-[color:var(--text-body)] transition hover:bg-[color:var(--brand-primary-light)] hover:text-[color:var(--brand-primary-dark)]"
-                >
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-[color:var(--surface-secondary)] text-[color:var(--brand-primary)] transition group-hover:bg-white">
-                    <Icon aria-hidden className="h-4 w-4" />
-                  </span>
-                  <span>{item.label}</span>
-                </LocaleLink>
-              );
-            })}
-          </nav>
+          <div className="mt-4 min-h-0 flex-1 overflow-y-auto pr-1 [scrollbar-width:thin] [scrollbar-color:var(--border-default)_transparent]">
+            <nav className="grid gap-1.5" aria-label="Student navigation">
+              {dashboard.menu.map((item) => {
+                const Icon = navIcons[item.key as keyof typeof navIcons] ?? GraduationCap;
+                return (
+                  <LocaleLink
+                    key={item.key}
+                    href={item.href}
+                    locale={locale}
+                    className="focus-ring group flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-extrabold text-[color:var(--text-body)] transition hover:bg-[color:var(--brand-primary-light)] hover:text-[color:var(--brand-primary-dark)]"
+                  >
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-[color:var(--surface-secondary)] text-[color:var(--brand-primary)] transition group-hover:bg-white">
+                      <Icon aria-hidden className="h-4 w-4" />
+                    </span>
+                    <span>{item.label}</span>
+                  </LocaleLink>
+                );
+              })}
+            </nav>
+          </div>
 
-          <div className="mt-5 grid gap-2 border-t border-[color:var(--border-default)] pt-4">
+          <div className="mt-4 grid shrink-0 gap-2 border-t border-[color:var(--border-default)] pt-4">
             <LocaleLink
               href="/"
               locale={locale}
@@ -109,7 +111,7 @@ export function StudentShell({
           </div>
         </aside>
 
-        <div className="min-w-0">
+        <div className="min-w-0 lg:col-start-2">
           <div className="mb-4 rounded-[1.5rem] border border-white/80 bg-white/82 p-3 shadow-[0_16px_40px_rgba(15,23,42,0.06)] backdrop-blur-xl lg:hidden">
             <div className="flex items-center gap-3 px-1 py-2">
               <div className="grid h-11 w-11 place-items-center rounded-2xl bg-[color:var(--brand-primary)] text-sm font-black text-white">
