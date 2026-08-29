@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, ChevronDown, Clock3, Mail, MapPin, Menu, Phone, UserRound, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Clock3, LayoutDashboard, LogOut, Mail, MapPin, Menu, Phone, UserRound, X } from "lucide-react";
+import { logoutAction } from "@/actions/auth";
 import { LocaleLink } from "@/components/ui/link";
 import { LocaleSwitcher } from "./locale-switcher";
 import { BrandLogo } from "@/components/ui/brand-logo";
 import type { AppLocale } from "@/lib/i18n/routing";
-import type { NavItem, PublicBootstrap } from "@/lib/api/types";
+import type { AuthUser, NavItem, PublicBootstrap } from "@/lib/api/types";
 import { cn } from "@/lib/utils";
 
 function setting(settings: PublicBootstrap["settings"], key: string) {
@@ -43,9 +44,13 @@ function NavItemLink({
 export function SiteHeader({
   bootstrap,
   locale,
+  currentUser,
+  accountHref,
 }: {
   bootstrap: PublicBootstrap;
   locale: AppLocale;
+  currentUser?: AuthUser | null;
+  accountHref?: string | null;
 }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -55,6 +60,14 @@ export function SiteHeader({
   const email = setting(settings, "site_email");
   const address = setting(settings, "site_address");
   const logoUrl = setting(settings, "site_logo_url");
+  const isStudent = currentUser?.type === "student" || currentUser?.roles.some((role) => role.toLowerCase() === "student");
+  const accountLabel = isStudent ? "Student Panel" : "Dashboard";
+  const initials = currentUser?.name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
 
   const contactItems = useMemo(
     () => [
@@ -164,15 +177,39 @@ export function SiteHeader({
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <LocaleLink
-            href="/login"
-            locale={locale}
-            className="focus-ring inline-flex min-h-10 items-center gap-2 rounded-lg border border-[color:var(--border-default)] px-4 py-2 text-sm font-extrabold text-[color:var(--text-heading)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
-          >
-            <UserRound aria-hidden className="h-4 w-4" />
-            Login
-          </LocaleLink>
-          {bootstrap.auth.registration_enabled ? (
+          {currentUser ? (
+            <>
+              <LocaleLink
+                href={accountHref ?? "/student"}
+                locale={locale}
+                className="focus-ring inline-flex min-h-10 items-center gap-2 rounded-lg border border-[color:var(--border-default)] px-3 py-2 text-sm font-extrabold text-[color:var(--text-heading)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
+              >
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-[color:var(--brand-primary)] text-[11px] font-black text-white">
+                  {initials || <UserRound aria-hidden className="h-3.5 w-3.5" />}
+                </span>
+                {accountLabel}
+              </LocaleLink>
+              <form action={logoutAction.bind(null, locale)}>
+                <button
+                  type="submit"
+                  className="focus-ring grid h-10 w-10 place-items-center rounded-lg bg-[color:var(--text-heading)] text-white transition hover:bg-[color:var(--brand-primary-dark)]"
+                  aria-label="Logout"
+                >
+                  <LogOut aria-hidden className="h-4 w-4" />
+                </button>
+              </form>
+            </>
+          ) : (
+            <LocaleLink
+              href="/login"
+              locale={locale}
+              className="focus-ring inline-flex min-h-10 items-center gap-2 rounded-lg border border-[color:var(--border-default)] px-4 py-2 text-sm font-extrabold text-[color:var(--text-heading)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
+            >
+              <UserRound aria-hidden className="h-4 w-4" />
+              Login
+            </LocaleLink>
+          )}
+          {!currentUser && bootstrap.auth.registration_enabled ? (
             <LocaleLink
               href="/register"
               locale={locale}
@@ -258,22 +295,48 @@ export function SiteHeader({
           </div>
 
           <div className="grid gap-3 border-t border-[color:var(--border-default)] p-4">
-            <LocaleLink
-              href="/courses"
-              locale={locale}
-              onClick={() => setOpen(false)}
-              className="focus-ring inline-flex min-h-11 items-center justify-center rounded-lg bg-[color:var(--brand-secondary)] px-5 py-3 text-sm font-extrabold text-white"
-            >
-              Browse Courses
-            </LocaleLink>
-            <LocaleLink
-              href="/login"
-              locale={locale}
-              onClick={() => setOpen(false)}
-              className="focus-ring inline-flex min-h-11 items-center justify-center rounded-lg border border-[color:var(--border-default)] px-5 py-3 text-sm font-extrabold text-[color:var(--text-heading)]"
-            >
-              Login
-            </LocaleLink>
+            {currentUser ? (
+              <>
+                <LocaleLink
+                  href={accountHref ?? "/student"}
+                  locale={locale}
+                  onClick={() => setOpen(false)}
+                  className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[color:var(--brand-secondary)] px-5 py-3 text-sm font-extrabold text-white"
+                >
+                  <LayoutDashboard aria-hidden className="h-4 w-4" />
+                  {accountLabel}
+                </LocaleLink>
+                <form action={logoutAction.bind(null, locale)}>
+                  <button
+                    type="submit"
+                    onClick={() => setOpen(false)}
+                    className="focus-ring inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border border-[color:var(--border-default)] px-5 py-3 text-sm font-extrabold text-[color:var(--text-heading)]"
+                  >
+                    <LogOut aria-hidden className="h-4 w-4" />
+                    Logout
+                  </button>
+                </form>
+              </>
+            ) : (
+              <>
+                <LocaleLink
+                  href="/courses"
+                  locale={locale}
+                  onClick={() => setOpen(false)}
+                  className="focus-ring inline-flex min-h-11 items-center justify-center rounded-lg bg-[color:var(--brand-secondary)] px-5 py-3 text-sm font-extrabold text-white"
+                >
+                  Browse Courses
+                </LocaleLink>
+                <LocaleLink
+                  href="/login"
+                  locale={locale}
+                  onClick={() => setOpen(false)}
+                  className="focus-ring inline-flex min-h-11 items-center justify-center rounded-lg border border-[color:var(--border-default)] px-5 py-3 text-sm font-extrabold text-[color:var(--text-heading)]"
+                >
+                  Login
+                </LocaleLink>
+              </>
+            )}
           </div>
         </aside>
       </div>

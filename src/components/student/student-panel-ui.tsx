@@ -86,14 +86,17 @@ export function StudentInfoItem({
 export function StudentEmptyState({
   title,
   message,
+  action,
 }: {
   title: string;
   message: string;
+  action?: ReactNode;
 }) {
   return (
     <div className="rounded-[1.5rem] border border-dashed border-[color:var(--border-default)] bg-white/75 p-8 text-center">
       <h3 className="text-lg font-black text-[color:var(--text-heading)]">{title}</h3>
       <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[color:var(--text-body)]">{message}</p>
+      {action ? <div className="mt-5 flex justify-center">{action}</div> : null}
     </div>
   );
 }

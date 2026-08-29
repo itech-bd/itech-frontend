@@ -3,17 +3,21 @@
 import type { ReactNode } from "react";
 import { useSelectedLayoutSegment } from "next/navigation";
 import type { AppLocale } from "@/lib/i18n/routing";
-import type { PublicBootstrap } from "@/lib/api/types";
+import type { AuthUser, PublicBootstrap } from "@/lib/api/types";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
 
 export function SiteShell({
   bootstrap,
   locale,
+  currentUser,
+  accountHref,
   children,
 }: {
   bootstrap: PublicBootstrap;
   locale: AppLocale;
+  currentUser?: AuthUser | null;
+  accountHref?: string | null;
   children: ReactNode;
 }) {
   const segment = useSelectedLayoutSegment();
@@ -21,7 +25,7 @@ export function SiteShell({
 
   return (
     <div className="min-h-screen overflow-x-hidden">
-      {isStudentRoute ? null : <SiteHeader bootstrap={bootstrap} locale={locale} />}
+      {isStudentRoute ? null : <SiteHeader bootstrap={bootstrap} locale={locale} currentUser={currentUser} accountHref={accountHref} />}
       {children}
       {isStudentRoute ? null : <SiteFooter bootstrap={bootstrap} locale={locale} />}
     </div>

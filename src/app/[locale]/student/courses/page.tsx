@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowRight, BookOpenCheck, Search } from "lucide-react";
+import { ArrowRight, BookOpenCheck, Compass, Search } from "lucide-react";
 import { PaginationNav } from "@/components/ui/pagination";
 import { LocaleLink } from "@/components/ui/link";
 import { StudentEmptyState, StudentPageHeader } from "@/components/student/student-panel-ui";
@@ -31,8 +31,18 @@ export default async function StudentCoursesPage({
         title="Your enrolled learning paths"
         description="Continue the courses connected with your pending or approved batch enrollments."
         action={
-          <div className="rounded-2xl bg-[color:var(--brand-primary-light)] px-4 py-3 text-sm font-black text-[color:var(--brand-primary-dark)]">
-            {formatNumber(courses.pagination.total, locale)} course{courses.pagination.total === 1 ? "" : "s"}
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="rounded-2xl bg-[color:var(--brand-primary-light)] px-4 py-3 text-sm font-black text-[color:var(--brand-primary-dark)]">
+              {formatNumber(courses.pagination.total, locale)} course{courses.pagination.total === 1 ? "" : "s"}
+            </div>
+            <LocaleLink
+              locale={locale}
+              href="/student/explore-courses"
+              className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-[color:var(--brand-secondary)] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(255,122,26,0.18)] transition hover:bg-[color:var(--brand-secondary-dark)]"
+            >
+              <Compass aria-hidden className="h-4 w-4" />
+              Explore Courses
+            </LocaleLink>
           </div>
         }
       />
@@ -62,7 +72,20 @@ export default async function StudentCoursesPage({
           ))}
         </div>
       ) : (
-        <StudentEmptyState title="No enrolled courses found" message="Try a different search keyword or apply to a course from the public course page." />
+        <StudentEmptyState
+          title="No enrolled courses found"
+          message="Try a different search keyword or explore the full course catalog."
+          action={
+            <LocaleLink
+              locale={locale}
+              href="/student/explore-courses"
+              className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-[color:var(--brand-primary)] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[color:var(--brand-primary-dark)]"
+            >
+              <Compass aria-hidden className="h-4 w-4" />
+              Explore Courses
+            </LocaleLink>
+          }
+        />
       )}
 
       <PaginationNav locale={locale} pagination={courses.pagination} basePath="/student/courses" searchParams={{ search }} />

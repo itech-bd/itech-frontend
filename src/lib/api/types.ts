@@ -63,6 +63,19 @@ export type CourseSummary = {
   enrolled_batches_count?: number;
 };
 
+export type CourseEnrollmentStatus = "none" | "pending" | "approved";
+
+export type StudentCourseCatalogItem = CourseSummary & {
+  enrollment_status: CourseEnrollmentStatus;
+  joined_batch_ids: number[];
+  joined_batches: Array<{
+    batch_id: number;
+    status: Exclude<CourseEnrollmentStatus, "none">;
+    batch_type: "online" | "offline" | null;
+  }>;
+  pending_order_id: number | null;
+};
+
 export type BatchMentorSummary = {
   id: number;
   name: string;
@@ -182,6 +195,7 @@ export type PublicProfilePayload = {
 
 export type AuthUser = {
   id: number;
+  type?: "student" | "mentor" | "admin" | string;
   name: string;
   email: string;
   email_verified: boolean;

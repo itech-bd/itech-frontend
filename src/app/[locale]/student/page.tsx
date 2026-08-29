@@ -7,6 +7,7 @@ import {
   CalendarDays,
   CircleDashed,
   CirclePlay,
+  Compass,
   Clock3,
   FileText,
   GraduationCap,
@@ -34,14 +35,24 @@ export default async function StudentDashboardPage({ params }: { params: Promise
         title={`Welcome back, ${dashboard.user.name}`}
         description="Your courses, live classes, mentors, and invoices are organized here so you always know the next step."
         action={
-          <LocaleLink
-            locale={locale}
-            href="/student/courses"
-            className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-[color:var(--brand-secondary)] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(255,122,26,0.22)] transition hover:bg-[color:var(--brand-secondary-dark)]"
-          >
-            Continue Learning
-            <ArrowRight aria-hidden className="h-4 w-4" />
-          </LocaleLink>
+          <div className="flex flex-wrap items-center gap-3">
+            <LocaleLink
+              locale={locale}
+              href="/student/explore-courses"
+              className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-[color:var(--brand-secondary)]/35 bg-white px-5 py-3 text-sm font-extrabold text-[color:var(--brand-secondary)] transition hover:bg-[color:var(--surface-tint)]"
+            >
+              <Compass aria-hidden className="h-4 w-4" />
+              Explore Courses
+            </LocaleLink>
+            <LocaleLink
+              locale={locale}
+              href="/student/courses"
+              className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-[color:var(--brand-secondary)] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(255,122,26,0.22)] transition hover:bg-[color:var(--brand-secondary-dark)]"
+            >
+              Continue Learning
+              <ArrowRight aria-hidden className="h-4 w-4" />
+            </LocaleLink>
+          </div>
         }
       />
 

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import {
   BookOpenCheck,
   CalendarDays,
+  Compass,
   FileText,
   GraduationCap,
   Home,
@@ -19,6 +20,7 @@ const navIcons = {
   dashboard: Home,
   profile: UserRound,
   courses: BookOpenCheck,
+  explore_courses: Compass,
   batches: CalendarDays,
   mentors: UsersRound,
   invoices: FileText,

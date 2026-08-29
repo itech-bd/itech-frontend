@@ -14,6 +14,7 @@ import type {
   RegistrationResult,
   ReviewSummary,
   StudentBatchDetail,
+  StudentCourseCatalogItem,
   StudentCourseDetail,
   StudentDashboard,
   StudentInvoice,
@@ -220,6 +221,16 @@ export async function getStudentDashboard(locale: Locale) {
 export async function listStudentCourses(locale: Locale, params: { search?: string; page?: number; per_page?: number }) {
   return apiFetch<PaginatedResponse<CourseSummary> & { filters: Record<string, unknown> }>(
     `/student/courses${queryString(params)}`,
+    { locale, auth: true },
+  );
+}
+
+export async function listStudentCourseCatalog(
+  locale: Locale,
+  params: { search?: string; track?: string; page?: number; per_page?: number },
+) {
+  return apiFetch<PaginatedResponse<StudentCourseCatalogItem> & { filters: Record<string, unknown> }>(
+    `/student/course-catalog${queryString(params)}`,
     { locale, auth: true },
   );
 }
