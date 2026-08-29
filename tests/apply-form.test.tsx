@@ -1,7 +1,11 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { ApplyForm } from "@/components/public/apply-form";
 import type { CourseSummary } from "@/lib/api/types";
+
+vi.mock("@/actions/apply", () => ({
+  applyNowAction: vi.fn(),
+}));
 
 const courses: CourseSummary[] = [
   {

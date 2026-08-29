@@ -6,15 +6,37 @@ import { isLocale } from "@/lib/i18n/routing";
 import { CheckoutForm } from "@/components/checkout/checkout-form";
 import { checkoutAction } from "@/actions/checkout";
 
+type CheckoutSearchParams = Record<string, string | string[] | undefined>;
+
+function firstValue(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function selectedBatchId(query: CheckoutSearchParams) {
+  return firstValue(query.batch_id)?.trim() || "";
+}
+
+function selectedBatchType(query: CheckoutSearchParams) {
+  const value = firstValue(query.batch_type)?.trim();
+  return value === "online" || value === "offline" ? value : "";
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; course: string }> }): Promise<Metadata> {
   const { locale, course } = await params;
   if (!isLocale(locale)) notFound();
   return { title: course };
 }
 
-export default async function CheckoutCoursePage({ params }: { params: Promise<{ locale: string; course: string }> }) {
+export default async function CheckoutCoursePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string; course: string }>;
+  searchParams: Promise<CheckoutSearchParams>;
+}) {
   const { locale, course } = await params;
   if (!isLocale(locale)) notFound();
+  const query = await searchParams;
   const preview = await getCheckoutPreview(locale, course);
   const action = checkoutAction.bind(null, locale, course);
 
@@ -23,7 +45,13 @@ export default async function CheckoutCoursePage({ params }: { params: Promise<{
       <div className="mx-auto w-full max-w-4xl px-4 lg:px-8">
         <SectionTitle kicker="Checkout" title={preview.course.title} subtitle="Select your preferred batch and complete your admission request." align="left" />
         <div className="mt-8 grid gap-6 lg:grid-cols-[1.15fr_.85fr]">
-          <CheckoutForm action={action} preview={preview} locale={locale} />
+          <CheckoutForm
+            action={action}
+            preview={preview}
+            locale={locale}
+            defaultBatchId={selectedBatchId(query)}
+            defaultBatchType={selectedBatchType(query)}
+          />
           <div className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="text-xl font-black text-slate-950">Batch options</h2>
             <div className="mt-4 space-y-3">

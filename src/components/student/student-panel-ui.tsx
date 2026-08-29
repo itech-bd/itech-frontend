@@ -13,8 +13,8 @@ export function StudentPageHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-5 rounded-[1.5rem] border border-white/80 bg-white/80 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] backdrop-blur sm:p-6 lg:flex-row lg:items-end lg:justify-between">
-      <div>
+    <div className="flex min-w-0 flex-col gap-5 overflow-hidden rounded-[1.5rem] border border-white/80 bg-white/80 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.06)] backdrop-blur sm:p-6 lg:flex-row lg:items-end lg:justify-between">
+      <div className="min-w-0">
         <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--brand-secondary)]/20 bg-[color:var(--surface-tint)] px-3 py-1.5 text-xs font-black uppercase tracking-[0.14em] text-[color:var(--brand-secondary-dark)]">
           <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--brand-secondary)]" />
           {kicker}
@@ -24,7 +24,7 @@ export function StudentPageHeader({
         </h1>
         {description ? <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--text-body)] sm:text-base">{description}</p> : null}
       </div>
-      {action ? <div className="shrink-0">{action}</div> : null}
+      {action ? <div className="w-full min-w-0 lg:w-auto lg:max-w-[22rem] xl:max-w-[28rem]">{action}</div> : null}
     </div>
   );
 }
@@ -37,7 +37,7 @@ export function StudentCard({
   className?: string;
 }) {
   return (
-    <div className={cn("rounded-[1.5rem] border border-[color:var(--border-default)]/80 bg-white p-5 shadow-[0_14px_35px_rgba(15,23,42,0.06)]", className)}>
+    <div className={cn("min-w-0 rounded-[1.5rem] border border-[color:var(--border-default)]/80 bg-white p-5 shadow-[0_14px_35px_rgba(15,23,42,0.06)]", className)}>
       {children}
     </div>
   );
@@ -55,7 +55,7 @@ export function StudentStatusBadge({ status }: { status: string | null | undefin
           : "bg-[color:var(--brand-primary-light)] text-[color:var(--brand-primary-dark)] ring-[color:var(--brand-primary-light)]";
 
   return (
-    <span className={cn("inline-flex rounded-full px-3 py-1 text-xs font-black capitalize ring-1", style)}>
+    <span className={cn("inline-flex shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-xs font-black capitalize ring-1", style)}>
       {normalized.replace(/_/g, " ")}
     </span>
   );

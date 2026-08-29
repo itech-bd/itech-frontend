@@ -16,7 +16,8 @@ import {
   ShieldCheck,
   UsersRound,
 } from "lucide-react";
-import { getPublicHome } from "@/lib/api/site";
+import { getPublicHome, listStudentCourseCatalog } from "@/lib/api/site";
+import { getOptionalCurrentUser } from "@/lib/auth/current-user";
 import { isLocale, type AppLocale } from "@/lib/i18n/routing";
 import { SectionTitle } from "@/components/ui/section-title";
 import { MentorCard } from "@/components/public/mentor-card";
@@ -354,7 +355,13 @@ export default async function LocaleHomePage({
 }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const data = await getPublicHome(locale);
+  const [data, currentUser] = await Promise.all([
+    getPublicHome(locale),
+    getOptionalCurrentUser(locale),
+  ]);
+  const isStudent = currentUser?.type === "student" || currentUser?.roles.some((role) => role.toLowerCase() === "student") || false;
+  const studentCatalog = isStudent ? await listStudentCourseCatalog(locale, { per_page: 50 }) : null;
+  const applyCourses = studentCatalog?.items ?? data.popular_courses;
 
   const backedUpMentors = data.mentors.filter((mentor) => !mentor.profile_image_url?.includes("3UhGbshwTkgdD37Gg1dG4aMHoTw1gTeGuVO4CUjm"));
   const { ongoingBatches, upcomingBatches } = splitHomeBatches(data);
@@ -367,7 +374,7 @@ export default async function LocaleHomePage({
             <HeroPromo locale={locale} courses={data.popular_courses} />
           </div>
           <div className="min-w-0">
-            <ApplyForm courses={data.popular_courses} locale={locale} />
+            <ApplyForm courses={applyCourses} locale={locale} currentUser={isStudent ? currentUser : null} />
           </div>
         </div>
       </section>

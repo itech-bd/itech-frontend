@@ -27,19 +27,21 @@ export default async function StudentDashboardPage({ params }: { params: Promise
   if (!isLocale(locale)) notFound();
   const dashboard = await getStudentDashboard(locale);
   const nextClass = dashboard.upcoming_schedules[0];
+  const visibleSchedules = dashboard.upcoming_schedules.slice(0, 3);
+  const hiddenScheduleCount = dashboard.upcoming_schedules.length - visibleSchedules.length;
 
   return (
-    <main className="space-y-5">
+    <main className="space-y-4 sm:space-y-5">
       <StudentPageHeader
         kicker="Learning Console"
         title={`Welcome back, ${dashboard.user.name}`}
         description="Your courses, live classes, mentors, and invoices are organized here so you always know the next step."
         action={
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="grid w-full gap-3 sm:grid-cols-2 lg:flex lg:flex-wrap lg:justify-end">
             <LocaleLink
               locale={locale}
               href="/student/explore-courses"
-              className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-[color:var(--brand-secondary)]/35 bg-white px-5 py-3 text-sm font-extrabold text-[color:var(--brand-secondary)] transition hover:bg-[color:var(--surface-tint)]"
+              className="focus-ring inline-flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-2xl border border-[color:var(--brand-secondary)]/35 bg-white px-4 py-3 text-sm font-extrabold text-[color:var(--brand-secondary)] transition hover:bg-[color:var(--surface-tint)]"
             >
               <Compass aria-hidden className="h-4 w-4" />
               Explore Courses
@@ -47,7 +49,7 @@ export default async function StudentDashboardPage({ params }: { params: Promise
             <LocaleLink
               locale={locale}
               href="/student/courses"
-              className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-[color:var(--brand-secondary)] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(255,122,26,0.22)] transition hover:bg-[color:var(--brand-secondary-dark)]"
+              className="focus-ring inline-flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-2xl bg-[color:var(--brand-secondary)] px-4 py-3 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(255,122,26,0.22)] transition hover:bg-[color:var(--brand-secondary-dark)]"
             >
               Continue Learning
               <ArrowRight aria-hidden className="h-4 w-4" />
@@ -58,11 +60,11 @@ export default async function StudentDashboardPage({ params }: { params: Promise
 
       <StudentStats stats={dashboard.stats} locale={locale} />
 
-      <section className="grid gap-5 xl:grid-cols-[1.25fr_.75fr]">
-        <StudentCard className="overflow-hidden p-0">
+      <section className="grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,1.35fr)_minmax(20rem,.65fr)]">
+        <StudentCard className="min-w-0 overflow-hidden p-0">
           <div className="border-b border-[color:var(--border-default)]/80 bg-[linear-gradient(135deg,#ffffff,#f4f8ff)] p-5 sm:p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
+              <div className="min-w-0">
                 <div className="inline-flex items-center gap-2 rounded-full bg-[color:var(--brand-primary-light)] px-3 py-1.5 text-xs font-black text-[color:var(--brand-primary-dark)]">
                   <MonitorPlay aria-hidden className="h-4 w-4" />
                   Upcoming Classes
@@ -71,26 +73,41 @@ export default async function StudentDashboardPage({ params }: { params: Promise
                 <p className="mt-2 text-sm leading-6 text-[color:var(--text-body)]">Follow your upcoming class schedule and join on time.</p>
               </div>
               {nextClass ? (
-                <div className="rounded-2xl bg-white px-4 py-3 text-sm shadow-sm">
-                  <div className="font-black text-[color:var(--text-heading)]">Next class</div>
-                  <div className="mt-1 text-[color:var(--text-muted)]">{formatDate(nextClass.class_date, locale)}</div>
+                <div className="flex shrink-0 items-center gap-2">
+                  <div className="rounded-2xl bg-white px-4 py-3 text-sm shadow-sm">
+                    <div className="font-black text-[color:var(--text-heading)]">Next class</div>
+                    <div className="mt-1 text-[color:var(--text-muted)]">{formatDate(nextClass.class_date, locale)}</div>
+                  </div>
+                  <LocaleLink locale={locale} href="/student/batches" className="focus-ring hidden min-h-11 items-center justify-center rounded-2xl border border-[color:var(--border-default)] bg-white px-4 py-3 text-xs font-black text-[color:var(--brand-primary)] transition hover:border-[color:var(--brand-primary)] sm:inline-flex">
+                    View all
+                  </LocaleLink>
                 </div>
               ) : null}
             </div>
           </div>
 
           <div className="grid gap-4 p-5 sm:p-6">
-            {dashboard.upcoming_schedules.length ? (
-              dashboard.upcoming_schedules.map((schedule, index) => (
+            {visibleSchedules.length ? (
+              visibleSchedules.map((schedule, index) => (
                 <UpcomingClassCard key={schedule.id} schedule={schedule} locale={locale} featured={index === 0} />
               ))
             ) : (
               <StudentEmptyState title="No upcoming classes yet" message="Your approved batch schedule will appear here when classes are available." />
             )}
+            {hiddenScheduleCount > 0 ? (
+              <LocaleLink
+                locale={locale}
+                href="/student/batches"
+                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-[color:var(--border-default)] bg-white px-4 py-3 text-sm font-black text-[color:var(--brand-primary)] transition hover:border-[color:var(--brand-primary)] hover:bg-[color:var(--brand-primary-light)]"
+              >
+                View {hiddenScheduleCount} more upcoming classes
+                <ArrowUpRight aria-hidden className="h-4 w-4" />
+              </LocaleLink>
+            ) : null}
           </div>
         </StudentCard>
 
-        <div className="grid gap-5">
+        <div className="grid min-w-0 gap-5">
           <StudentCard>
             <div className="flex items-center justify-between gap-4">
               <div>
@@ -114,9 +131,9 @@ export default async function StudentDashboardPage({ params }: { params: Promise
                     className="focus-ring block rounded-2xl border border-[color:var(--border-default)]/70 bg-[color:var(--surface-secondary)] p-4 transition hover:border-[color:var(--brand-primary)]/30 hover:bg-white"
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <div className="font-black text-[color:var(--text-heading)]">{batch.name}</div>
-                        <div className="mt-1 text-sm text-[color:var(--text-muted)]">{batch.course?.title ?? "Course"}</div>
+                      <div className="min-w-0">
+                        <div className="truncate font-black text-[color:var(--text-heading)]">{batch.name}</div>
+                        <div className="mt-1 truncate text-sm text-[color:var(--text-muted)]">{batch.course?.title ?? "Course"}</div>
                       </div>
                       <StudentStatusBadge status={batch.enrollment?.status ?? batch.status} />
                     </div>
@@ -151,11 +168,11 @@ export default async function StudentDashboardPage({ params }: { params: Promise
                     className="focus-ring block rounded-2xl border border-[color:var(--border-default)]/70 bg-white p-4 transition hover:border-[color:var(--brand-secondary)]/35 hover:bg-[color:var(--surface-tint)]/40"
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <div className="font-black text-[color:var(--text-heading)]">#INV-{order.id}</div>
-                        <div className="mt-1 text-sm text-[color:var(--text-muted)]">{order.course?.title ?? "Course"}</div>
+                      <div className="min-w-0">
+                        <div className="truncate font-black text-[color:var(--text-heading)]">#INV-{order.id}</div>
+                        <div className="mt-1 truncate text-sm text-[color:var(--text-muted)]">{order.course?.title ?? "Course"}</div>
                       </div>
-                      <div className="text-right">
+                      <div className="shrink-0 text-right">
                         <StudentStatusBadge status={order.status} />
                         <div className="mt-2 text-sm font-black text-[color:var(--text-heading)]">{formatCurrency(order.amount, locale)}</div>
                       </div>
@@ -194,6 +211,8 @@ function UpcomingClassCard({
   const day = formatScheduleDatePart(schedule.class_date, locale, { day: "2-digit" });
   const weekday = formatScheduleDatePart(schedule.class_date, locale, { weekday: "long" });
   const distanceLabel = getScheduleDistanceLabel(schedule.class_date, locale);
+  const hasLiveLink = Boolean(schedule.live_class_link);
+  const hasRecordingLink = Boolean(schedule.recorded_video_link);
 
   return (
     <article
@@ -203,15 +222,15 @@ function UpcomingClassCard({
           : "rounded-[1.35rem] border border-[color:var(--border-default)]/75 bg-white p-4 transition hover:border-[color:var(--brand-primary)]/30 hover:bg-[color:var(--surface-secondary)]"
       }
     >
-      <div className="grid gap-4 xl:grid-cols-[5.25rem_minmax(0,1fr)_minmax(17rem,.42fr)] xl:items-center">
-        <div className="flex items-center gap-3 xl:block">
-          <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-white text-center shadow-sm ring-1 ring-[color:var(--border-default)]/75">
+      <div className="grid min-w-0 gap-4 sm:grid-cols-[4.75rem_minmax(0,1fr)]">
+        <div className="flex min-w-0 items-center gap-3 sm:block">
+          <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-white text-center shadow-sm ring-1 ring-[color:var(--border-default)]/75 sm:h-20 sm:w-20">
             <div>
               <div className="text-xs font-black uppercase text-[color:var(--brand-primary)]">{month}</div>
-              <div className="mt-1 text-3xl font-black leading-none text-[color:var(--text-heading)]">{day}</div>
+              <div className="mt-1 text-2xl font-black leading-none text-[color:var(--text-heading)] sm:text-3xl">{day}</div>
             </div>
           </div>
-          <div className="min-w-0 xl:mt-3">
+          <div className="min-w-0 sm:mt-3">
             <span className={featured ? "rounded-full bg-[color:var(--brand-secondary)] px-3 py-1 text-xs font-black text-white" : "rounded-full bg-[color:var(--brand-primary-light)] px-3 py-1 text-xs font-black text-[color:var(--brand-primary-dark)]"}>
               {featured ? "Next class" : distanceLabel}
             </span>
@@ -220,7 +239,7 @@ function UpcomingClassCard({
         </div>
 
         <div className="min-w-0">
-          <h3 className="text-lg font-black leading-snug text-[color:var(--text-heading)]">{schedule.topic}</h3>
+          <h3 className="text-base font-black leading-snug text-[color:var(--text-heading)] sm:text-lg">{schedule.topic}</h3>
           <div className="mt-3 grid gap-2 md:grid-cols-2">
             <div className="flex min-w-0 items-center gap-2 rounded-xl bg-white/85 px-3 py-2 text-sm font-bold text-[color:var(--text-body)] ring-1 ring-[color:var(--border-default)]/70">
               <BookOpenCheck aria-hidden className="h-4 w-4 shrink-0 text-[color:var(--brand-primary)]" />
@@ -236,8 +255,10 @@ function UpcomingClassCard({
             {formatDate(schedule.class_date, locale)}
           </p>
         </div>
+      </div>
 
-        <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+      <div className="mt-4 grid min-w-0 gap-2 sm:grid-cols-3">
+        {hasLiveLink ? (
           <ScheduleAction
             href={schedule.live_class_link}
             label="Join live class"
@@ -245,6 +266,8 @@ function UpcomingClassCard({
             tone="live"
             icon={<Video aria-hidden className="h-4 w-4" />}
           />
+        ) : null}
+        {hasRecordingLink ? (
           <ScheduleAction
             href={schedule.recorded_video_link}
             label="Watch recording"
@@ -252,17 +275,23 @@ function UpcomingClassCard({
             tone="recording"
             icon={<CirclePlay aria-hidden className="h-4 w-4" />}
           />
-          {schedule.batch?.id ? (
-            <LocaleLink
-              locale={locale}
-              href={`/student/batches/${schedule.batch.id}`}
-              className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[color:var(--border-default)] bg-white px-4 py-2.5 text-xs font-black text-[color:var(--text-heading)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)] sm:col-span-2 xl:col-span-1 2xl:col-span-2"
-            >
-              Batch routine
-              <ArrowUpRight aria-hidden className="h-4 w-4" />
-            </LocaleLink>
-          ) : null}
-        </div>
+        ) : null}
+        {!hasLiveLink && !hasRecordingLink ? (
+          <span className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-dashed border-[color:var(--border-default)] bg-white/65 px-4 py-2.5 text-xs font-black text-[color:var(--text-muted)] sm:col-span-2">
+            <CircleDashed aria-hidden className="h-4 w-4" />
+            Class links will appear when available
+          </span>
+        ) : null}
+        {schedule.batch?.id ? (
+          <LocaleLink
+            locale={locale}
+            href={`/student/batches/${schedule.batch.id}`}
+            className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[color:var(--border-default)] bg-white px-4 py-2.5 text-xs font-black text-[color:var(--text-heading)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
+          >
+            Batch routine
+            <ArrowUpRight aria-hidden className="h-4 w-4" />
+          </LocaleLink>
+        ) : null}
       </div>
     </article>
   );

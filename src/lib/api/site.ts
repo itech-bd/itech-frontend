@@ -137,7 +137,7 @@ export async function login(locale: Locale, payload: { email: string; password: 
   });
 }
 
-export async function register(locale: Locale, payload: { name: string; email: string; password: string; password_confirmation: string }) {
+export async function register(locale: Locale, payload: { name: string; email: string; mobile_number?: string; password: string; password_confirmation: string }) {
   return apiFetch<RegistrationResult>("/auth/register", {
     method: "POST",
     locale,

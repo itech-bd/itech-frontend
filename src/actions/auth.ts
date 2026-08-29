@@ -62,6 +62,7 @@ export async function registerAction(_: ActionState, formData: FormData): Promis
     const result = await register(locale, {
       name: String(formData.get("name") ?? ""),
       email: String(formData.get("email") ?? ""),
+      mobile_number: String(formData.get("mobile_number") ?? ""),
       password: String(formData.get("password") ?? ""),
       password_confirmation: String(formData.get("password_confirmation") ?? ""),
     });

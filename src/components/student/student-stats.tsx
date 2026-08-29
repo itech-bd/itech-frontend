@@ -47,19 +47,19 @@ export function StudentStats({
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
       {cards.map((card) => {
         const Icon = card.icon;
         return (
-          <div key={card.label} className="group rounded-[1.4rem] border border-[color:var(--border-default)]/80 bg-white p-5 shadow-[0_14px_34px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(15,23,42,0.09)]">
+          <div key={card.label} className="group rounded-[1.25rem] border border-[color:var(--border-default)]/80 bg-white p-4 shadow-[0_14px_34px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(15,23,42,0.09)] sm:rounded-[1.4rem] sm:p-5">
             <div className="flex items-start justify-between gap-3">
-              <div className={`grid h-12 w-12 place-items-center rounded-2xl ${card.tint}`}>
+              <div className={`grid h-10 w-10 place-items-center rounded-2xl sm:h-12 sm:w-12 ${card.tint}`}>
                 <Icon aria-hidden className="h-5 w-5" />
               </div>
               <CheckCircle2 aria-hidden className="h-5 w-5 text-emerald-500 opacity-0 transition group-hover:opacity-100" />
             </div>
-            <div className="mt-5 text-2xl font-black text-[color:var(--text-heading)]">{card.value}</div>
-            <div className="mt-1 text-sm font-black text-[color:var(--text-heading)]">{card.label}</div>
+            <div className="mt-4 text-xl font-black text-[color:var(--text-heading)] sm:mt-5 sm:text-2xl">{card.value}</div>
+            <div className="mt-1 text-xs font-black text-[color:var(--text-heading)] sm:text-sm">{card.label}</div>
             <div className="mt-2 text-xs font-semibold leading-5 text-[color:var(--text-muted)]">{card.helper}</div>
           </div>
         );

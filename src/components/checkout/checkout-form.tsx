@@ -12,10 +12,14 @@ export function CheckoutForm({
   action,
   preview,
   locale,
+  defaultBatchId = "",
+  defaultBatchType = "",
 }: {
   action: (state: ActionState, formData: FormData) => Promise<ActionState>;
   preview: CheckoutPreview;
   locale: "en" | "bn";
+  defaultBatchId?: string;
+  defaultBatchType?: "online" | "offline" | "";
 }) {
   const [state, formAction, pending] = useActionState(action, initialState);
   const router = useRouter();
@@ -45,7 +49,7 @@ export function CheckoutForm({
       ) : null}
       <div>
         <label htmlFor="batch_id" className="block text-sm font-bold text-slate-900">Select batch</label>
-        <select id="batch_id" name="batch_id" className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm">
+        <select id="batch_id" name="batch_id" defaultValue={defaultBatchId} className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm">
           <option value="">Choose a batch</option>
           {preview.batches.map((batch) => {
             const joined = joinedByBatch.get(batch.id);
@@ -66,7 +70,7 @@ export function CheckoutForm({
       {preview.requires_batch_type ? (
         <div>
           <label htmlFor="batch_type" className="block text-sm font-bold text-slate-900">Batch type</label>
-          <select id="batch_type" name="batch_type" className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm">
+          <select id="batch_type" name="batch_type" defaultValue={defaultBatchType} className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm">
             <option value="">Choose type</option>
             <option value="online">Online</option>
             <option value="offline">Offline</option>

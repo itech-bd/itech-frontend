@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { cookies } from "next/headers";
 import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { SiteShell } from "@/components/layout/site-shell";
-import { getPublicBootstrap, me } from "@/lib/api/site";
-import { ApiError } from "@/lib/api/errors";
-import { authCookieName } from "@/lib/auth/cookies";
+import { getPublicBootstrap } from "@/lib/api/site";
+import { getOptionalCurrentUser } from "@/lib/auth/current-user";
 import { shouldUseBackendPanel } from "@/lib/auth/login-redirect";
 import { env } from "@/lib/env";
 import { isLocale } from "@/lib/i18n/routing";
@@ -52,20 +50,4 @@ export default async function LocaleLayout({
       {children}
     </SiteShell>
   );
-}
-
-async function getOptionalCurrentUser(locale: "en" | "bn") {
-  if (!(await cookies()).get(authCookieName())?.value) {
-    return null;
-  }
-
-  try {
-    return await me(locale);
-  } catch (error) {
-    if (error instanceof ApiError) {
-      return null;
-    }
-
-    throw error;
-  }
 }
