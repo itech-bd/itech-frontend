@@ -12,9 +12,11 @@ function setting(settings: PublicBootstrap["settings"], key: string) {
 export function SiteFooter({
   bootstrap,
   locale,
+  compact = false,
 }: {
   bootstrap: PublicBootstrap;
   locale: AppLocale;
+  compact?: boolean;
 }) {
   const settings = bootstrap.settings;
   const logoUrl = setting(settings, "site_logo_url");
@@ -31,14 +33,14 @@ export function SiteFooter({
   ].filter((entry): entry is [string, string] => Boolean(entry[1]));
 
   return (
-    <footer className="mt-16 border-t border-[color:var(--brand-secondary)]/20 bg-[linear-gradient(180deg,#fff8ef_0%,#fff2de_100%)] text-[color:var(--text-body)]">
-      <div className="mx-auto w-full max-w-7xl px-4 py-12 lg:px-8 lg:py-16">
-        <div className="grid gap-10 lg:grid-cols-[1.05fr_1.35fr_.95fr] lg:items-start">
+    <footer className={`${compact ? "mt-0" : "mt-16"} border-t border-[color:var(--brand-secondary)]/20 bg-[linear-gradient(180deg,#fff8ef_0%,#fff2de_100%)] text-[color:var(--text-body)]`}>
+      <div className={`mx-auto w-full max-w-7xl px-4 ${compact ? "py-8 lg:px-7 lg:py-10" : "py-12 lg:px-8 lg:py-16"}`}>
+        <div className={`grid ${compact ? "gap-7" : "gap-10"} lg:grid-cols-[1.05fr_1.35fr_.95fr] lg:items-start`}>
           <div>
             <BrandLogo logoUrl={logoUrl} />
-            <p className="mt-5 max-w-md text-sm leading-7">{description}</p>
+            <p className={`${compact ? "mt-4" : "mt-5"} max-w-md text-sm leading-7`}>{description}</p>
             {socialLinks.length ? (
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className={`${compact ? "mt-4" : "mt-5"} flex flex-wrap gap-2`}>
                 {socialLinks.map(([label, href]) => (
                   <a
                     key={label}
@@ -56,7 +58,7 @@ export function SiteFooter({
 
           <div>
             <h2 className="text-xl font-black text-[color:var(--text-heading)]">Useful links</h2>
-            <div className="mt-5 grid gap-x-8 gap-y-3 text-sm font-bold sm:grid-cols-2 lg:grid-cols-3">
+            <div className={`${compact ? "mt-4" : "mt-5"} grid gap-x-8 gap-y-3 text-sm font-bold sm:grid-cols-2 lg:grid-cols-3`}>
               {bootstrap.footer_navigation.map((link) => (
                 <LocaleLink
                   key={link.href + link.label}
@@ -72,7 +74,7 @@ export function SiteFooter({
 
           <div>
             <h2 className="text-xl font-black text-[color:var(--text-heading)]">{setting(settings, "footer_contact_title") ?? "Contact info"}</h2>
-            <div className="mt-5 grid gap-3 text-sm">
+            <div className={`${compact ? "mt-4" : "mt-5"} grid gap-3 text-sm`}>
               {phone ? (
                 <a href={`tel:${phone.replace(/[^\d+]/g, "")}`} className="focus-ring flex gap-3 rounded-lg bg-[color:var(--surface-secondary)] p-3 font-bold text-[color:var(--text-heading)]">
                   <Phone aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--brand-primary)]" />
@@ -95,7 +97,7 @@ export function SiteFooter({
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-4 border-t border-[color:var(--border-default)] pt-6 text-sm text-[color:var(--text-muted)] sm:flex-row sm:items-center sm:justify-between">
+        <div className={`${compact ? "mt-7 pt-5" : "mt-10 pt-6"} flex flex-col gap-4 border-t border-[color:var(--border-default)] text-sm text-[color:var(--text-muted)] sm:flex-row sm:items-center sm:justify-between`}>
           <p>&copy; {new Date().getFullYear()} iTechBD Ltd. {setting(settings, "footer_copyright") ?? "All rights reserved."}</p>
           <div className="flex flex-wrap gap-4 font-bold">
             <LocaleLink href="/privacy" locale={locale} className="focus-ring transition hover:text-[color:var(--brand-primary)]">

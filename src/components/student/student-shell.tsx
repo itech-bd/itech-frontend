@@ -11,9 +11,10 @@ import {
   UserRound,
   UsersRound,
 } from "lucide-react";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { LocaleLink } from "@/components/ui/link";
 import type { AppLocale } from "@/lib/i18n/routing";
-import type { StudentDashboard } from "@/lib/api/types";
+import type { PublicBootstrap, StudentDashboard } from "@/lib/api/types";
 import { logoutAction } from "@/actions/auth";
 
 const navIcons = {
@@ -29,10 +30,12 @@ const navIcons = {
 export function StudentShell({
   locale,
   dashboard,
+  bootstrap,
   children,
 }: {
   locale: AppLocale;
   dashboard: StudentDashboard;
+  bootstrap: PublicBootstrap;
   children: ReactNode;
 }) {
   const initials = dashboard.user.name
@@ -114,6 +117,7 @@ export function StudentShell({
         </aside>
 
         <div className="min-w-0 lg:h-[calc(100vh-2.5rem)] lg:min-h-0 lg:overflow-y-auto lg:pr-1 lg:[scrollbar-color:var(--border-default)_transparent] lg:[scrollbar-width:thin]">
+          <div className="flex min-h-full flex-col gap-4">
           <div className="mb-4 rounded-[1.5rem] border border-white/80 bg-white/82 p-3 shadow-[0_16px_40px_rgba(15,23,42,0.06)] backdrop-blur-xl lg:hidden">
             <div className="flex items-center gap-3 px-1 py-2">
               <div className="grid h-11 w-11 place-items-center rounded-2xl bg-[color:var(--brand-primary)] text-sm font-black text-white">
@@ -153,8 +157,10 @@ export function StudentShell({
             </nav>
           </div>
 
-          <div className="min-h-[calc(100vh-2rem)] overflow-hidden rounded-[2rem] border border-white/80 bg-white/70 p-3 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-5 lg:min-h-full">
+          <div className="min-h-[calc(100vh-2rem)] flex-1 overflow-hidden rounded-[2rem] border border-white/80 bg-white/70 p-3 shadow-[0_24px_70px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:p-5">
             {children}
+          </div>
+          <SiteFooter bootstrap={bootstrap} locale={locale} compact />
           </div>
         </div>
       </div>
