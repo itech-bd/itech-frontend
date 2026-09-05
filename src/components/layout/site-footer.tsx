@@ -31,11 +31,14 @@ export function SiteFooter({
     ["LinkedIn", setting(settings, "footer_linkedin_url")],
     ["YouTube", setting(settings, "footer_youtube_url")],
   ].filter((entry): entry is [string, string] => Boolean(entry[1]));
+  const linkSplit = Math.ceil(bootstrap.footer_navigation.length / 2);
+  const usefulLinks = compact ? bootstrap.footer_navigation : bootstrap.footer_navigation.slice(0, linkSplit);
+  const moreLinks = compact ? [] : bootstrap.footer_navigation.slice(linkSplit);
 
   return (
     <footer className={`${compact ? "mt-0" : "mt-16"} border-t border-[color:var(--brand-secondary)]/20 bg-[linear-gradient(180deg,#fff8ef_0%,#fff2de_100%)] text-[color:var(--text-body)]`}>
       <div className={`mx-auto w-full max-w-7xl px-4 ${compact ? "pb-24 pt-4 lg:px-5 lg:py-4" : "py-12 lg:px-8 lg:py-16"}`}>
-        <div className={`grid ${compact ? "gap-4 lg:grid-cols-[1fr_1.2fr_.95fr]" : "gap-10 lg:grid-cols-[1.05fr_1.35fr_.95fr]"} lg:items-start`}>
+        <div className={`grid ${compact ? "gap-4 lg:grid-cols-[1fr_1.2fr_.95fr]" : "gap-8 sm:grid-cols-2 lg:grid-cols-[1.1fr_.7fr_.75fr_1fr]"} lg:items-start`}>
           <div>
             <BrandLogo logoUrl={logoUrl} compact={compact} />
             <p className={`${compact ? "mt-3 text-xs leading-6" : "mt-5 text-sm leading-7"} max-w-md`}>{description}</p>
@@ -45,11 +48,12 @@ export function SiteFooter({
                   <a
                     key={label}
                     href={href}
-                    className={`${compact ? "min-h-8 px-2.5 py-1.5 text-[11px]" : "min-h-10 px-3 py-2 text-xs"} focus-ring inline-flex items-center rounded-lg border border-[color:var(--border-default)] font-extrabold text-[color:var(--text-heading)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]`}
+                    aria-label={label}
+                    className={`${compact ? "inline-flex min-h-8 items-center rounded-lg px-2.5 py-1.5 text-[11px]" : "grid h-9 w-9 place-items-center rounded-full text-xs"} focus-ring border border-[color:var(--border-default)] bg-white font-extrabold text-[color:var(--text-heading)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]`}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {label}
+                    {compact ? label : label.slice(0, 1)}
                   </a>
                 ))}
               </div>
@@ -57,9 +61,9 @@ export function SiteFooter({
           </div>
 
           <div>
-            <h2 className={`${compact ? "text-base" : "text-xl"} font-black text-[color:var(--text-heading)]`}>Useful links</h2>
-            <div className={`${compact ? "mt-3 gap-x-5 gap-y-2 text-xs" : "mt-5 gap-x-8 gap-y-3 text-sm"} grid font-bold sm:grid-cols-2 lg:grid-cols-3`}>
-              {bootstrap.footer_navigation.map((link) => (
+            <h2 className={`${compact ? "text-base" : "text-sm uppercase tracking-[0.08em]"} font-black text-[color:var(--text-heading)]`}>Useful links</h2>
+            <div className={`${compact ? "mt-3 gap-x-5 gap-y-2 text-xs sm:grid-cols-2 lg:grid-cols-3" : "mt-5 gap-y-3 text-sm"} grid font-bold`}>
+              {usefulLinks.map((link) => (
                 <LocaleLink
                   key={link.href + link.label}
                   locale={locale}
@@ -72,23 +76,41 @@ export function SiteFooter({
             </div>
           </div>
 
+          {!compact ? (
+            <div>
+              <h2 className="text-sm font-black uppercase tracking-[0.08em] text-[color:var(--text-heading)]">More links</h2>
+              <div className="mt-5 grid gap-y-3 text-sm font-bold">
+                {moreLinks.map((link) => (
+                  <LocaleLink
+                    key={link.href + link.label}
+                    locale={locale}
+                    href={link.href}
+                    className="focus-ring rounded-lg py-1 transition hover:text-[color:var(--brand-primary)]"
+                  >
+                    {link.label}
+                  </LocaleLink>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
           <div>
-            <h2 className={`${compact ? "text-base" : "text-xl"} font-black text-[color:var(--text-heading)]`}>{setting(settings, "footer_contact_title") ?? "Contact info"}</h2>
+            <h2 className={`${compact ? "text-base" : "text-sm uppercase tracking-[0.08em]"} font-black text-[color:var(--text-heading)]`}>{setting(settings, "footer_contact_title") ?? "Get in touch"}</h2>
             <div className={`${compact ? "mt-3 gap-2 text-xs" : "mt-5 gap-3 text-sm"} grid`}>
               {phone ? (
-                <a href={`tel:${phone.replace(/[^\d+]/g, "")}`} className={`${compact ? "p-2" : "p-3"} focus-ring flex gap-3 rounded-lg bg-[color:var(--surface-secondary)] font-bold text-[color:var(--text-heading)]`}>
+                <a href={`tel:${phone.replace(/[^\d+]/g, "")}`} className={`${compact ? "rounded-lg bg-[color:var(--surface-secondary)] p-2" : "py-1"} focus-ring flex gap-3 font-bold text-[color:var(--text-heading)]`}>
                   <Phone aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--brand-primary)]" />
                   {phone}
                 </a>
               ) : null}
               {email ? (
-                <a href={`mailto:${email}`} className={`${compact ? "p-2" : "p-3"} focus-ring flex gap-3 rounded-lg bg-[color:var(--surface-secondary)] font-bold text-[color:var(--text-heading)]`}>
+                <a href={`mailto:${email}`} className={`${compact ? "rounded-lg bg-[color:var(--surface-secondary)] p-2" : "py-1"} focus-ring flex gap-3 font-bold text-[color:var(--text-heading)]`}>
                   <Mail aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--brand-secondary)]" />
                   {email}
                 </a>
               ) : null}
               {address ? (
-                <p className={`${compact ? "p-2 leading-5" : "p-3 leading-6"} flex gap-3 rounded-lg bg-[color:var(--surface-secondary)]`}>
+                <p className={`${compact ? "rounded-lg bg-[color:var(--surface-secondary)] p-2 leading-5" : "py-1 leading-6"} flex gap-3`}>
                   <MapPin aria-hidden className="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--brand-accent)]" />
                   {address}
                 </p>

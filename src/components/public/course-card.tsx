@@ -5,6 +5,7 @@ import { formatCurrency, formatDate } from "@/lib/formatting";
 import type { AppLocale } from "@/lib/i18n/routing";
 import type { CourseSummary } from "@/lib/api/types";
 import { resolveMediaUrl } from "@/lib/media";
+import { coursePlainSummary } from "@/lib/rich-text";
 
 export function CourseCard({ course, locale }: { course: CourseSummary; locale: AppLocale }) {
   const thumbnail = resolveMediaUrl(course.thumbnail_url);
@@ -15,6 +16,7 @@ export function CourseCard({ course, locale }: { course: CourseSummary; locale: 
     course.pricing?.discount_price ??
     course.pricing?.old_price ??
     null;
+  const description = coursePlainSummary(course.description, course.title, "");
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-lg border border-[color:var(--border-default)] bg-white shadow-[var(--shadow-card)] transition duration-300 hover:-translate-y-1 hover:border-[color:var(--brand-secondary)]/45">
@@ -72,7 +74,7 @@ export function CourseCard({ course, locale }: { course: CourseSummary; locale: 
             </div>
           ) : null}
         </div>
-        {course.description ? <p className="mt-3 line-clamp-2 text-sm leading-6 text-[color:var(--text-body)]">{course.description}</p> : null}
+        {description ? <p className="mt-3 line-clamp-2 text-sm leading-6 text-[color:var(--text-body)]">{description}</p> : null}
 
         <div className="mt-auto grid grid-cols-2 gap-2 border-t border-[color:var(--border-default)] pt-4 text-xs font-black">
           <div className="rounded bg-[color:var(--surface-secondary)] px-3 py-2">
