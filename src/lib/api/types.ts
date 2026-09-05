@@ -221,6 +221,7 @@ export type RegistrationResult = {
 export type CheckoutPreview = {
   course: CourseSummary;
   requires_batch_type: boolean;
+  available_batch_types?: Array<"online" | "offline">;
   default_amount: number;
   batches: BatchSummary[];
   joined_batches: Array<{

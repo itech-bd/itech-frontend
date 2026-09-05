@@ -20,7 +20,7 @@ export async function checkoutAction(
     return {
       ok: true,
       message: "Checkout saved.",
-      redirectTo: `/checkout/orders/${result.id}`,
+      redirectTo: `/${locale}/checkout/orders/${result.id}`,
     };
   } catch (error) {
     if (isApiError(error)) return { ok: false, message: error.message, errors: error.errors };

@@ -27,6 +27,9 @@ export function CheckoutForm({
   const joinedByBatch = new Map(joinedBatches.map((batch) => [batch.batch_id, batch]));
   const hasSelectableBatch = preview.batches.length === 0 || preview.batches.some((batch) => !joinedByBatch.has(batch.id));
   const courseKey = preview.course.slug ?? preview.course.id;
+  const batchTypeOptions = availableBatchTypeOptions(preview);
+  const singleBatchType = batchTypeOptions.length === 1 ? batchTypeOptions[0] : null;
+  const selectedDefaultBatchType = batchTypeOptions.some((option) => option.value === defaultBatchType) ? defaultBatchType : "";
 
   useEffect(() => {
     if (state.ok && state.redirectTo) {
@@ -67,14 +70,26 @@ export function CheckoutForm({
           </p>
         ) : null}
       </div>
-      {preview.requires_batch_type ? (
+      {batchTypeOptions.length > 1 ? (
         <div>
           <label htmlFor="batch_type" className="block text-sm font-bold text-slate-900">Batch type</label>
-          <select id="batch_type" name="batch_type" defaultValue={defaultBatchType} className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm">
+          <select id="batch_type" name="batch_type" defaultValue={selectedDefaultBatchType} className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm">
             <option value="">Choose type</option>
-            <option value="online">Online</option>
-            <option value="offline">Offline</option>
+            {batchTypeOptions.map((option) => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
           </select>
+        </div>
+      ) : singleBatchType ? (
+        <div>
+          <input type="hidden" name="batch_type" value={singleBatchType.value} />
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
+            <div className="text-sm font-bold text-slate-900">Admission type</div>
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-sm">
+              <span className="font-extrabold text-slate-950">{singleBatchType.label}</span>
+              <span className="rounded-full bg-white px-3 py-1 text-xs font-bold text-slate-500">Only available option</span>
+            </div>
+          </div>
         </div>
       ) : null}
       {state.message ? <p className={`text-sm ${state.ok ? "text-emerald-600" : "text-rose-600"}`}>{state.message}</p> : null}
@@ -83,4 +98,36 @@ export function CheckoutForm({
       </button>
     </form>
   );
+}
+
+type BatchType = "online" | "offline";
+
+function availableBatchTypeOptions(preview: CheckoutPreview) {
+  const types = preview.available_batch_types?.length
+    ? preview.available_batch_types
+    : fallbackAvailableBatchTypes(preview);
+
+  return Array.from(new Set(types)).map((type) => ({
+    value: type,
+    label: type === "online" ? "Online" : "Offline",
+  }));
+}
+
+function fallbackAvailableBatchTypes(preview: CheckoutPreview): BatchType[] {
+  const pricing = preview.course.pricing;
+  if (!pricing) return [];
+
+  const types: BatchType[] = [];
+  if (hasPrice(pricing.online_old_price) || hasPrice(pricing.online_discount_price)) {
+    types.push("online");
+  }
+  if (hasPrice(pricing.offline_old_price) || hasPrice(pricing.offline_discount_price)) {
+    types.push("offline");
+  }
+
+  return types;
+}
+
+function hasPrice(value: number | null | undefined) {
+  return value !== null && value !== undefined;
 }
