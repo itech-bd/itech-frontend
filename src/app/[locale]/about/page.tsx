@@ -78,7 +78,6 @@ export default async function AboutPage({
   return (
     <main>
       <section className="relative overflow-hidden bg-white">
-        <div className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,var(--brand-primary),var(--brand-secondary))]" />
         <div className="absolute -left-32 top-24 h-72 w-72 rounded-full bg-[color:var(--brand-primary-light)] blur-3xl" />
         <div className="absolute -right-24 bottom-16 h-72 w-72 rounded-full bg-[color:var(--surface-tint)] blur-3xl" />
         <div className="relative mx-auto grid w-full max-w-7xl gap-10 px-4 py-16 lg:grid-cols-[.95fr_1.05fr] lg:items-center lg:px-8 lg:py-20">

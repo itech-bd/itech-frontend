@@ -16,7 +16,7 @@ import {
   Video,
 } from "lucide-react";
 import { LocaleLink } from "@/components/ui/link";
-import { StudentCard, StudentEmptyState, StudentInfoItem, StudentPageHeader, StudentStatusBadge } from "@/components/student/student-panel-ui";
+import { StudentCard, StudentEmptyState, StudentInfoItem, StudentStatusBadge } from "@/components/student/student-panel-ui";
 import { getStudentBatch } from "@/lib/api/site";
 import type { StudentBatchDetail } from "@/lib/api/types";
 import { formatDate, formatNumber } from "@/lib/formatting";
@@ -30,22 +30,38 @@ export default async function StudentBatchDetailPage({ params }: { params: Promi
   const thumbnail = resolveMediaUrl(data.batch.course?.thumbnail_url);
 
   return (
-    <main className="space-y-5">
-      <StudentPageHeader
-        kicker="Batch Workspace"
-        title={data.batch.name}
-        description={data.batch.course?.title ?? "Your batch schedule and access details are organized here."}
-        action={
-          <LocaleLink
-            locale={locale}
-            href="/student/batches"
-            className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-[color:var(--border-default)] bg-white px-5 py-3 text-sm font-extrabold text-[color:var(--text-heading)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
-          >
-            <ArrowLeft aria-hidden className="h-4 w-4" />
-            All batches
-          </LocaleLink>
-        }
-      />
+    <main className="space-y-4">
+      <section className="overflow-hidden rounded-[1.25rem] border border-white/80 bg-white/82 p-4 shadow-[0_16px_40px_rgba(15,23,42,0.06)] backdrop-blur-xl sm:p-5">
+        <div className="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="min-w-0">
+            <div className="grid min-w-0 gap-2 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-start">
+              <div className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[color:var(--brand-secondary)]/20 bg-[color:var(--surface-tint)] px-3 py-1.5 text-xs font-black uppercase tracking-[0.14em] text-[color:var(--brand-secondary-dark)] sm:mt-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--brand-secondary)]" />
+                Batch Workspace
+              </div>
+              <div className="min-w-0">
+                <h1 className="truncate text-xl font-black leading-tight text-[color:var(--text-heading)] sm:text-2xl">
+                  {data.batch.name}
+                </h1>
+                <p className="mt-1 truncate text-sm font-semibold text-[color:var(--text-body)]">
+                  {data.batch.course?.title ?? "Your batch schedule and access details are organized here."}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex shrink-0 justify-start lg:justify-end">
+            <LocaleLink
+              locale={locale}
+              href="/student/batches"
+              className="focus-ring inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-xl border border-[color:var(--border-default)] bg-white px-4 py-2 text-xs font-extrabold text-[color:var(--text-heading)] transition hover:border-[color:var(--brand-primary)] hover:text-[color:var(--brand-primary)]"
+            >
+              <ArrowLeft aria-hidden className="h-4 w-4" />
+              All batches
+            </LocaleLink>
+          </div>
+        </div>
+      </section>
 
       <section className="grid gap-5 xl:grid-cols-[.9fr_1.1fr]">
         <StudentCard className="overflow-hidden p-0">

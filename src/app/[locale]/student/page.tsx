@@ -222,16 +222,16 @@ function UpcomingClassCard({
           : "rounded-[1.35rem] border border-[color:var(--border-default)]/75 bg-white p-4 transition hover:border-[color:var(--brand-primary)]/30 hover:bg-[color:var(--surface-secondary)]"
       }
     >
-      <div className="grid min-w-0 gap-4 sm:grid-cols-[4.75rem_minmax(0,1fr)]">
-        <div className="flex min-w-0 items-center gap-3 sm:block">
+      <div className="grid min-w-0 grid-cols-[5.25rem_minmax(0,1fr)] gap-3 sm:grid-cols-[5.5rem_minmax(0,1fr)] sm:gap-4">
+        <div className="min-w-0">
           <div className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-white text-center shadow-sm ring-1 ring-[color:var(--border-default)]/75 sm:h-20 sm:w-20">
             <div>
               <div className="text-xs font-black uppercase text-[color:var(--brand-primary)]">{month}</div>
               <div className="mt-1 text-2xl font-black leading-none text-[color:var(--text-heading)] sm:text-3xl">{day}</div>
             </div>
           </div>
-          <div className="min-w-0 sm:mt-3">
-            <span className={featured ? "rounded-full bg-[color:var(--brand-secondary)] px-3 py-1 text-xs font-black text-white" : "rounded-full bg-[color:var(--brand-primary-light)] px-3 py-1 text-xs font-black text-[color:var(--brand-primary-dark)]"}>
+          <div className="mt-2 min-w-0 sm:mt-3">
+            <span className={featured ? "inline-flex whitespace-nowrap rounded-full bg-[color:var(--brand-secondary)] px-2.5 py-1 text-[11px] font-black leading-none text-white sm:px-3 sm:text-xs" : "inline-flex whitespace-nowrap rounded-full bg-[color:var(--brand-primary-light)] px-2.5 py-1 text-[11px] font-black leading-none text-[color:var(--brand-primary-dark)] sm:px-3 sm:text-xs"}>
               {featured ? "Next class" : distanceLabel}
             </span>
             <p className="mt-2 truncate text-xs font-bold text-[color:var(--text-muted)]">{weekday}</p>
@@ -257,7 +257,7 @@ function UpcomingClassCard({
         </div>
       </div>
 
-      <div className="mt-4 grid min-w-0 gap-2 sm:grid-cols-3">
+      <div className="mt-3 grid min-w-0 gap-2 sm:mt-4 sm:grid-cols-3">
         {hasLiveLink ? (
           <ScheduleAction
             href={schedule.live_class_link}

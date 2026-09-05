@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveLoginRedirect } from "@/lib/auth/login-redirect";
+import { isStudentPanelUser, resolveLoginRedirect } from "@/lib/auth/login-redirect";
 
 describe("login redirect", () => {
   it("keeps student users in the frontend student panel", () => {
@@ -25,6 +25,18 @@ describe("login redirect", () => {
     ).toBe("http://127.0.0.1:8000/login/handoff/abc");
   });
 
+  it("uses the backend handoff URL when the API provides one", () => {
+    expect(
+      resolveLoginRedirect({
+        roles: [],
+        loginHandoffUrl: "http://127.0.0.1:8000/login/handoff/abc",
+        backendDashboardUrl: "http://127.0.0.1:8000/dashboard",
+        next: "/en/student",
+        locale: "en",
+      }),
+    ).toBe("http://127.0.0.1:8000/login/handoff/abc");
+  });
+
   it("rejects external next URLs for frontend student redirects", () => {
     expect(
       resolveLoginRedirect({
@@ -34,5 +46,12 @@ describe("login redirect", () => {
         locale: "bn",
       }),
     ).toBe("/bn/student");
+  });
+
+  it("keeps only student accounts in the frontend session", () => {
+    expect(isStudentPanelUser({ type: "student", roles: [] })).toBe(true);
+    expect(isStudentPanelUser({ type: "user", roles: ["student"] })).toBe(true);
+    expect(isStudentPanelUser({ type: "admin", roles: ["admin"] })).toBe(false);
+    expect(isStudentPanelUser({ type: "mentor", roles: ["mentor"] })).toBe(false);
   });
 });

@@ -54,6 +54,7 @@ export function SiteHeader({
 }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mobileExpandedKey, setMobileExpandedKey] = useState<string | null>(null);
   const nav = bootstrap.navigation;
   const settings = bootstrap.settings;
   const phone = setting(settings, "site_phone");
@@ -91,6 +92,16 @@ export function SiteHeader({
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  const openMobileNavigation = () => {
+    setMobileExpandedKey(null);
+    setOpen(true);
+  };
+
+  const closeMobileNavigation = () => {
+    setMobileExpandedKey(null);
+    setOpen(false);
+  };
 
   return (
     <header
@@ -226,7 +237,7 @@ export function SiteHeader({
           aria-label="Open navigation menu"
           aria-controls="mobile-navigation"
           aria-expanded={open}
-          onClick={() => setOpen(true)}
+          onClick={openMobileNavigation}
           className="focus-ring grid h-11 w-11 place-items-center rounded-lg border border-[color:var(--border-default)] text-[color:var(--text-heading)] lg:hidden"
         >
           <Menu aria-hidden className="h-5 w-5" />
@@ -237,7 +248,7 @@ export function SiteHeader({
         <button
           type="button"
           aria-label="Close navigation menu"
-          onClick={() => setOpen(false)}
+          onClick={closeMobileNavigation}
           className={cn("absolute inset-0 bg-[color:var(--text-heading)]/45 transition-opacity", open ? "opacity-100" : "opacity-0")}
         />
         <aside
@@ -251,7 +262,7 @@ export function SiteHeader({
             <button
               type="button"
               aria-label="Close navigation menu"
-              onClick={() => setOpen(false)}
+              onClick={closeMobileNavigation}
               className="focus-ring grid h-10 w-10 place-items-center rounded-lg border border-[color:var(--border-default)] text-[color:var(--text-heading)]"
             >
               <X aria-hidden className="h-5 w-5" />
@@ -260,31 +271,65 @@ export function SiteHeader({
 
           <div className="flex-1 overflow-y-auto p-4">
             <div className="grid gap-2">
-              {nav.map((item) => (
-                <div key={item.key}>
-                  <NavItemLink
-                    item={item}
-                    locale={locale}
-                    onNavigate={() => setOpen(false)}
-                    className="w-full justify-between bg-[color:var(--surface-secondary)] text-[color:var(--text-heading)]"
-                  />
-                  {item.children?.length ? (
-                    <div className="mt-2 grid gap-2 pl-3">
-                      {item.children.map((child) => (
+              {nav.map((item) => {
+                const hasChildren = Boolean(item.children?.length);
+                const expanded = mobileExpandedKey === item.key;
+
+                return (
+                  <div key={item.key}>
+                    {hasChildren ? (
+                      <div
+                        className={cn(
+                          "flex min-h-10 overflow-hidden rounded-lg bg-[color:var(--surface-secondary)] text-sm font-bold text-[color:var(--text-heading)] transition hover:bg-[color:var(--surface-tint)] hover:text-[color:var(--brand-secondary)]",
+                          expanded && "bg-[color:var(--surface-tint)] text-[color:var(--brand-secondary)]",
+                        )}
+                      >
                         <LocaleLink
-                          key={child.key}
                           locale={locale}
-                          href={child.href}
-                          onClick={() => setOpen(false)}
-                          className="focus-ring rounded-lg px-4 py-3 text-sm font-bold text-[color:var(--text-body)] hover:bg-[color:var(--surface-tint)]"
+                          href={item.href}
+                          onClick={closeMobileNavigation}
+                          className="focus-ring flex min-w-0 flex-1 items-center px-3 py-2"
                         >
-                          {child.label}
+                          <span className="truncate">{item.label}</span>
                         </LocaleLink>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              ))}
+                        <button
+                          type="button"
+                          aria-label={`Toggle ${item.label} submenu`}
+                          aria-expanded={expanded}
+                          aria-controls={`mobile-submenu-${item.key}`}
+                          onClick={() => setMobileExpandedKey(expanded ? null : item.key)}
+                          className="focus-ring grid w-10 shrink-0 place-items-center border-l border-[color:var(--border-default)]/70"
+                        >
+                          <ChevronDown aria-hidden className={cn("h-4 w-4 shrink-0 transition", expanded && "rotate-180")} />
+                        </button>
+                      </div>
+                    ) : (
+                      <NavItemLink
+                        item={item}
+                        locale={locale}
+                        onNavigate={closeMobileNavigation}
+                        className="w-full justify-between bg-[color:var(--surface-secondary)] text-[color:var(--text-heading)]"
+                      />
+                    )}
+
+                    {hasChildren && expanded ? (
+                      <div id={`mobile-submenu-${item.key}`} className="mt-2 grid gap-2 pl-3">
+                        {item.children?.map((child) => (
+                          <LocaleLink
+                            key={child.key}
+                            locale={locale}
+                            href={child.href}
+                            onClick={closeMobileNavigation}
+                            className="focus-ring rounded-lg px-4 py-3 text-sm font-bold text-[color:var(--text-body)] hover:bg-[color:var(--surface-tint)]"
+                          >
+                            {child.label}
+                          </LocaleLink>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                );
+              })}
             </div>
 
             <div className="mt-5 grid gap-3 rounded-lg bg-[color:var(--surface-secondary)] p-4 text-sm">
@@ -300,7 +345,7 @@ export function SiteHeader({
                 <LocaleLink
                   href={accountHref ?? "/student"}
                   locale={locale}
-                  onClick={() => setOpen(false)}
+                  onClick={closeMobileNavigation}
                   className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[color:var(--brand-secondary)] px-5 py-3 text-sm font-extrabold text-white"
                 >
                   <LayoutDashboard aria-hidden className="h-4 w-4" />
@@ -309,7 +354,7 @@ export function SiteHeader({
                 <form action={logoutAction.bind(null, locale)}>
                   <button
                     type="submit"
-                    onClick={() => setOpen(false)}
+                    onClick={closeMobileNavigation}
                     className="focus-ring inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border border-[color:var(--border-default)] px-5 py-3 text-sm font-extrabold text-[color:var(--text-heading)]"
                   >
                     <LogOut aria-hidden className="h-4 w-4" />
@@ -322,7 +367,7 @@ export function SiteHeader({
                 <LocaleLink
                   href="/courses"
                   locale={locale}
-                  onClick={() => setOpen(false)}
+                  onClick={closeMobileNavigation}
                   className="focus-ring inline-flex min-h-11 items-center justify-center rounded-lg bg-[color:var(--brand-secondary)] px-5 py-3 text-sm font-extrabold text-white"
                 >
                   Browse Courses
@@ -330,7 +375,7 @@ export function SiteHeader({
                 <LocaleLink
                   href="/login"
                   locale={locale}
-                  onClick={() => setOpen(false)}
+                  onClick={closeMobileNavigation}
                   className="focus-ring inline-flex min-h-11 items-center justify-center rounded-lg border border-[color:var(--border-default)] px-5 py-3 text-sm font-extrabold text-[color:var(--text-heading)]"
                 >
                   Login

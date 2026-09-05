@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { login, logout, register, forgotPassword, resetPassword, resendVerification } from "@/lib/api/site";
 import { env } from "@/lib/env";
-import { resolveLoginRedirect } from "@/lib/auth/login-redirect";
+import { isStudentPanelUser, resolveLoginRedirect } from "@/lib/auth/login-redirect";
 import { authCookieName, authCookieOptions } from "@/lib/auth/cookies";
 import { isApiError } from "@/lib/api/errors";
 import type { LocaleCode } from "@/lib/api/types";
@@ -36,7 +36,13 @@ export async function loginAction(_: ActionState, formData: FormData): Promise<A
       return { ok: false, message: "Login failed." };
     }
 
-    (await cookies()).set(authCookieName(), result.access_token, authCookieOptions());
+    const cookieStore = await cookies();
+    if (isStudentPanelUser(result.user)) {
+      cookieStore.set(authCookieName(), result.access_token, authCookieOptions());
+    } else {
+      cookieStore.delete(authCookieName());
+    }
+
     return {
       ok: true,
       message: "Login successful.",
@@ -127,5 +133,5 @@ export async function logoutAction(locale: LocaleCode) {
   }
 
   (await cookies()).delete(authCookieName());
-  redirect(`/${locale}/login`);
+  redirect(`/${locale}`);
 }
